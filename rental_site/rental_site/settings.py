@@ -127,5 +127,3 @@ STATIC_URL = '/static/'
 SITE_ID = 1
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-CKEDITOR_BASEPATH = os.path.join(STATIC_ROOT, '/ckeditor/ckeditor/')
