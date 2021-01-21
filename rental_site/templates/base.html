@@ -4,36 +4,75 @@
 <head>
     <meta charset="UTF-8">
     {% block meta_title %}
-        <title>Welcome</title>
+    <title>Welcome</title>
     {% endblock %}
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/carousel/">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 <body>
-    <header class="navbar bg-dark text-light">
-        <a class="navbar-brand text-light" href="#">СаянФонд</a>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
-            <h1 class="text-light navbar-brand m-0"></h1>
+            <a class="navbar-brand d-flex text-light align-items-center" href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     class="bi bi-house-fill mr-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M8 3.293l6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                    <path fill-rule="evenodd"
+                          d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                </svg>
+                СаянФонд</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Продажа</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Аренда</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Гаражи</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Земля</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Коммерческая недвижимость</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-primary d-flex"><i class="bi bi-person-plus pr-1"></i>Разместить объявление
+            </button>
         </div>
-    </header>
-    <main role="main">
+    </nav>
+</header>
+<main role="main">
     {% block content %}
     {% endblock %}
-    <footer class="border-top">
+    <footer class="border-top bg-dark text-light">
         <div class="container d-flex justify-content-start align-items-center p-3">
-            <a class="text-primary mr-3" href="/about/">about</a>
-            <a class="text-primary" href="/contact/">contact</a>
+            <a class="text-light mr-3" href="/about/">О нас</a>
+            <a class="text-light" href="/contact/">Контакты</a>
         </div>
     </footer>
-    </main>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</main>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
 </body>
 </html>
