@@ -1,9 +1,9 @@
 from django.contrib import admin
-from django.db import models
 from django.contrib.flatpages.admin import FlatPageAdmin as FlatpageFormOld
 from django.contrib.flatpages.models import FlatPage
 
 from ckeditor.widgets import CKEditorWidget
+from .models import *
 
 # Register your models here.
 
@@ -17,3 +17,7 @@ class FlatPageAdmin(FlatpageFormOld):
 
 
 admin.site.register(FlatPage, FlatPageAdmin)
+# admin.site.register(ApartmentAd)
+admin.site.register(Region)
+admin.site.register(Rubrics)
+admin.site.register(ApartmentAd)
