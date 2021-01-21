@@ -65,4 +65,8 @@ class LandPlot(models.Model):
     description = models.CharField(max_length=255, default='')
     address = models.CharField(max_length=200, default='')
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
+    ACTION_CHOICES = [
+        ('Продажа', 'Продажа'),
+    ]
+    action = models.CharField(choices=ACTION_CHOICES)
 
