@@ -1,44 +1,53 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
+
+
 # Create your models here.
 
-# товар, категория, тэги, продавец
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=12, default=True, unique=True)
+
+    def __str__(self):
+        return 'Profile for user {}'.format(self.user)
 
 
 class Region(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, verbose_name='Название', unique=True, db_index=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = 'Населенный пункт'
-        verbose_name_plural = 'Населенный пункты'
-
+        verbose_name_plural = 'Населенные пункты'
 
 
 class Ad(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     cost = models.PositiveIntegerField()
-    description = models.CharField(max_length=255, default='')
-    address = models.CharField(max_length=200, default='')
+    description = models.CharField(max_length=255, default=None)
+    address = models.CharField(max_length=200, default=None)
     ACTION_CHOICES = [
         ('Продажа', 'Продажа'),
         ('Аренда', 'Аренда'),
         ('Посуточно', 'Посуточно')
     ]
     action = models.CharField(max_length=20, choices=ACTION_CHOICES)
+    photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to={
-      'model__in': (
-        'apartment',
-        'room',
-        'garage',
-        'landplot'
-      )
-  })
-    object_id = models.PositiveIntegerField()
+        'model__in': (
+            'apartment',
+            'room',
+            'garage',
+            'landplot'
+        )
+    })
+    object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
 
     def __str__(self):
@@ -49,24 +58,47 @@ class Ad(models.Model):
         verbose_name_plural = 'Объявления'
 
 
-class Apartment(models.Model):
+class Image(models.Model):
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, default=True)
+    image = models.ImageField(upload_to='image_folder', verbose_name='Изображение')
+
+
+class Realty(models.Model):
+    ad = GenericRelation(Ad, related_query_name='realty')
+    total_square = models.FloatField(default=True)
+
+    class Meta:
+        abstract = True
+
+
+class Apartment(Realty):
     floor = models.PositiveSmallIntegerField()
     number_of_rooms = models.PositiveSmallIntegerField()
-    total_square = models.PositiveSmallIntegerField()
-    kitchen_square = models.PositiveSmallIntegerField()
-    living_square = models.PositiveSmallIntegerField()
-
-
-class Room(models.Model):
-    floor = models.PositiveSmallIntegerField()
+    kitchen_square = models.FloatField()
     living_square = models.FloatField()
 
+    class Meta:
+        verbose_name = 'Квартира'
+        verbose_name_plural = 'Квартиры'
 
-class Garage(models.Model):
+
+class Room(Realty):
+    floor = models.PositiveSmallIntegerField()
+
+    class Meta:
+        verbose_name = 'Комната'
+        verbose_name_plural = 'Комнаты'
+
+
+class Garage(Realty):
     number_of_floors = models.PositiveSmallIntegerField()
-    total_square = models.FloatField()
+
+    class Meta:
+        verbose_name = 'Гараж'
+        verbose_name_plural = 'Гаражы'
 
 
-class LandPlot(models.Model):
-    total_square = models.FloatField()
-
+class LandPlot(Realty):
+    class Meta:
+        verbose_name = 'Земельный участок'
+        verbose_name_plural = 'Земельные участки'
