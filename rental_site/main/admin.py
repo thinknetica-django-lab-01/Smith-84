@@ -17,7 +17,7 @@ class FlatPageAdmin(FlatpageFormOld):
 
 
 admin.site.register(FlatPage, FlatPageAdmin)
-# admin.site.register(ApartmentAd)
+
+
 admin.site.register(Region)
-admin.site.register(Rubrics)
-admin.site.register(ApartmentAd)
+admin.site.register(Ad)
