@@ -38,7 +38,6 @@ class Ad(models.Model):
         ('Посуточно', 'Посуточно')
     ]
     action = models.CharField(max_length=20, choices=ACTION_CHOICES)
-    photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to={
         'model__in': (
             'apartment',
