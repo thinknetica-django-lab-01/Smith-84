@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericRelation
 
 
 # Create your models here.
@@ -28,7 +27,7 @@ class Region(models.Model):
 
 class Ad(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
-    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     cost = models.PositiveIntegerField()
     description = models.CharField(max_length=255, default=None)
     address = models.CharField(max_length=200, default=None)
@@ -46,11 +45,11 @@ class Ad(models.Model):
             'landplot'
         )
     })
-    object_id = models.PositiveIntegerField(null=True, blank=True)
+    object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
 
     def __str__(self):
-        return self.description
+        return self.description[:40]
 
     class Meta:
         verbose_name = 'Объявление'
@@ -63,7 +62,6 @@ class Image(models.Model):
 
 
 class Realty(models.Model):
-    ad = GenericRelation(Ad, related_query_name='realty')
     total_square = models.FloatField(default=True)
 
     class Meta:
