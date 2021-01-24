@@ -31,6 +31,7 @@ class Ad(models.Model):
     cost = models.PositiveIntegerField()
     description = models.CharField(max_length=255, default=None)
     address = models.CharField(max_length=200, default=None)
+    title = models.CharField(max_length=120)
     ACTION_CHOICES = [
         ('Продажа', 'Продажа'),
         ('Аренда', 'Аренда'),
