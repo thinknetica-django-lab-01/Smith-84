@@ -6,7 +6,7 @@ from django.db import migrations, models
 def set_my_defaults(apps, schema_editor):
     Ad = apps.get_model('main', 'Ad')
     for ad in Ad.objects.all():
-        ad.title = str(ad.description)
+        ad.title = str(ad.description)[:120]
         ad.save()
 
 
