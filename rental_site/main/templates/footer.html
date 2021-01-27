@@ -1,6 +1,11 @@
+{% load custom_tags %}
 <footer class="border-top bg-dark text-light mt-3">
-    <div class="container d-flex justify-content-start align-items-center p-3">
-        <a class="text-light mr-3" href="/about/">О нас</a>
-        <a class="text-light" href="/contact/">Контакты</a>
+    <div class="container d-flex justify-content-center p-3 flex-wrap">
+        <p class="w-100 text-center">
+            <a class="text-light mr-2" href="/about/">О нас</a>
+            <a class="text-light" href="/contact/">Контакты</a>
+        </p>
+        <span>Time: {% current_time %}</span>
+
     </div>
 </footer>
