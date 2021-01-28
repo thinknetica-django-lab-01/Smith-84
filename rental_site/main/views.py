@@ -10,4 +10,5 @@ class Index(View):
 
     def get(self, request):
         turn_on_block = True
-        return render(request, self.template_name, context={'turn_on_block': turn_on_block})
+        current_user = request.user
+        return render(request, self.template_name, context={'turn_on_block': turn_on_block, 'current_user': current_user})
