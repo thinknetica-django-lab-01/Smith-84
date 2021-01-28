@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load custom_tags %}
 {% block content %}
 {% include 'header.html' with current_user=current_user %}
 <main role="main">
@@ -11,6 +11,9 @@
         </div>
     </div>
     <div class="container">
+        <div class="alert alert-info" role="alert">
+          {{ 'Привет мир!'|turn_over }}
+        </div>
         <h2>Лучшие предложения</h2>
         <div class="row ">
             <div class="col-lg-6 bg-light">
