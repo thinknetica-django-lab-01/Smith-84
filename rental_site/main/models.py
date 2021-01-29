@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from pytils.translit import slugify
 
 
 # Create your models here.
@@ -16,9 +17,14 @@ class Profile(models.Model):
 
 class Region(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название', unique=True, db_index=True)
+    slug = models.SlugField()
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Населенный пункт'

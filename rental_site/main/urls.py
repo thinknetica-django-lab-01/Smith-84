@@ -3,5 +3,5 @@ from .views import Index, ApartmentAd
 
 urlpatterns = [
     path('', Index.as_view()),
-    path('apartment/sell/', ApartmentAd.as_view(), name='list_apartment_sell')
+    path('apartment/<str>/sell/', ApartmentAd.as_view(), name='list_apartment_sell')
 ]
