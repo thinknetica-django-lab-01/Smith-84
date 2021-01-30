@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-{% include 'header.html' with current_user=current_user %}
+{% include 'header.html' %}
 <div class="filterspaces">
     <div class="container">
         <div class="container">
@@ -48,7 +48,9 @@
 
                     <div class="listing_thumb_wrapper">
                         <div class="property_gallery_slide-thumb">
-                            <a href="single-property-1.html"><img src="{{ ad }}" class="img-fluid mx-auto" alt=""></a>
+
+                            <a href="{{ ad.get_absolute_url }}" target="_blank"><img src="#" class="img-fluid mx-auto" alt=""></a>
+
                         </div>
                         <div class="uilist_view_thumb">
                             <a href="#" class="uilist-btn text-warning" data-toggle="tooltip"
@@ -73,8 +75,8 @@
                     <div class="modern_property_footer">
                         <div class="property-lists flex-1">
                             <ul>
-                                <li><span class="flatcons"><img src="assets/img/bed.svg" alt=""></span>3 Beds</li>
-                                <li><span class="flatcons"><img src="assets/img/bath.svg" alt=""></span>2 Baths</li>
+                                <li><span class="flatcons"><img src="assets/img/bed.svg" alt=""></span>{{ ad.content_object.floor }}</li>
+                                <li><span class="flatcons"><img src="assets/img/bath.svg" alt=""></span>{{ ad.content_object.total_square }}</li>
                             </ul>
                         </div>
                         <div class="fp_types">For Rent</div>

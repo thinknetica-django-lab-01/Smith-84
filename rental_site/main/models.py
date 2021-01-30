@@ -1,4 +1,6 @@
+import uuid
 from django.db import models
+from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -17,14 +19,14 @@ class Profile(models.Model):
 
 class Region(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название', unique=True, db_index=True)
-    # slug = models.SlugField()
+    slug = models.SlugField(primary_key=True, blank=True)
 
     def __str__(self):
         return self.name
 
-    # def save(self, *args, **kwargs):
-    #     self.slug = slugify(self.name)
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Населенный пункт'
@@ -32,11 +34,14 @@ class Region(models.Model):
 
 
 class Ad(models.Model):
+    uniq_id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     cost = models.PositiveIntegerField()
     description = models.CharField(max_length=255, default=None)
     address = models.CharField(max_length=200, default=None)
+    slug = models.SlugField(blank=True)
+    date_added = models.DateField(auto_now_add=True)
     ACTION_CHOICES = [
         ('sell', 'Продажа'),
         ('rent', 'Аренда'),
@@ -52,6 +57,13 @@ class Ad(models.Model):
     })
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
+
+    def save(self, *args, **kwargs):
+        self.slug = f"{slugify(self.description).replace(' ', '-')}-{str(self.uniq_id)}"
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('ad_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.description[:40]

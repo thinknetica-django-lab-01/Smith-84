@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.views.generic.list import ListView
+from django.views.generic import ListView, DetailView
 from .models import *
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_list_or_404
@@ -25,7 +25,7 @@ class AdsListMixin(ListView):
     action = None
 
     def get_queryset(self):
-        query = Ad.objects.filter(region__name='абакан', action=self.action, content_type=ContentType.objects.get_for_model(self.realty))
+        query = Ad.objects.filter(region__slug='abakan', action=self.action, content_type=ContentType.objects.get_for_model(self.realty))
         return query
 
 
@@ -62,3 +62,9 @@ class GarageRent(AdsListMixin):
 class LandPlotSell(AdsListMixin):
     realty = LandPlot
     action = 'sell'
+
+
+class AdDetail(DetailView):
+    model = Ad
+    template_name = 'ad_item.html'
+
