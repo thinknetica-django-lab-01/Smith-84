@@ -25,7 +25,7 @@ SECRET_KEY = '&wyey3!3a2ld2fmnhlfa-ybuu&#&t%1bk0sctr$hi79slcu*6l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mysite.com', 'abakan.mysite.com', 'www.mysite.com']
 
 
 # Application definition
@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'ckeditor',
     'pytils',
     'main',
+    'django_hosts'
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,9 +55,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware'
 ]
-
-ROOT_URLCONF = 'rental_site.urls'
 
 TEMPLATES = [
     {
@@ -131,3 +132,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 SITE_ID = 1
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+ROOT_URLCONF = 'rental_site.urls'
+ROOT_HOSTCONF = 'rental_site.hosts'
+DEFAULT_HOST = 'www'
