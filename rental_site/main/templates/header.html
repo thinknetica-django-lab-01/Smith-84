@@ -3,38 +3,54 @@
 <!-- ============================================================== -->
 <!-- Start Navigation -->
 <div class="header header-light">
-	<div class="container-fluid">
-		<nav id="navigation" class="navigation navigation-landscape">
-			<div class="nav-header">
-				<a class="nav-brand" href="#">
-					<img src="assets/img/logo.png" class="logo" alt="" />
-				</a>
-				<div class="nav-toggle"></div>
-			</div>
-			<div class="nav-menus-wrapper" style="transition-property: none;">
-				<ul class="nav-menu">
-					<li class="active"><a href="#">Главная<span class="submenu-indicator"></span></a></li>
-					<li><a href="#">Квартиры<span class="submenu-indicator"></span></a></li>
-					<li><a href="#">Комнаты<span class="submenu-indicator"></span></a></li>
-					<li ><a href="#">Гаражы<span class="submenu-indicator"></span></a>
-					<li ><a href="#">Земельные участки<span class="submenu-indicator"></span></a>
-				</ul>
+    <div class="container-fluid">
+        <nav id="navigation" class="navigation navigation-landscape">
+            <div class="nav-header">
+                <a class="nav-brand" href="#">
+                    <img src="assets/img/logo.png" class="logo" alt=""/>
+                </a>
+                <div class="nav-toggle"></div>
+            </div>
+            <div class="nav-menus-wrapper" style="transition-property: none;">
+                <ul class="nav-menu">
+                    <li class="active"><a href="#">Главная<span class="submenu-indicator"></span></a></li>
+                    <li><a href="#">Квартиры<span class="submenu-indicator"></span></a>
+                        <ul class="nav-dropdown nav-submenu">
+                            <li><a href="{% url 'apartment_sell' %}" target="_blank">Продажа<span class="submenu-indicator"></span></a></li>
+                            <li><a href="{% url 'apartment_rent' %}" target="_blank">Аренда<span class="submenu-indicator"></span></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Комнаты<span class="submenu-indicator"></span></a>
+                        <ul class="nav-dropdown nav-submenu">
+                            <li><a href="{% url 'room_sell' %}" target="_blank">Продажа<span class="submenu-indicator"></span></a></li>
+                            <li><a href="{% url 'room_rent' %}" target="_blank">Аренда<span class="submenu-indicator"></span></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Гаражы<span class="submenu-indicator"></span></a>
+                        <ul class="nav-dropdown nav-submenu">
+                            <li><a href="{% url 'garage_sell' %}" target="_blank">Продажа<span class="submenu-indicator"></span></a></li>
+                            <li><a href="{% url 'garage_rent' %}" target="_blank">Аренда<span class="submenu-indicator"></span></a></li>
+                        </ul>
 
-				<ul class="nav-menu nav-menu-social align-to-right">
-					<li>
-						<a href="#" data-toggle="modal" data-target="#login">
-							<i class="ti-user mr-1"></i><span class="dn-lg">Login/Register</span>
-						</a>
-					</li>
-					<li class="add-listing theme-bg">
-						<a href="submit-property.html">
-							 <i class="ti-plus"></i> Submit Property
-						</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
-	</div>
+                    </li>
+                    <li><a href="{% url 'land_plot_sell' %}" target="_blank">Земельные участки<span class="submenu-indicator"></span></a></li>
+                </ul>
+
+                <ul class="nav-menu nav-menu-social align-to-right">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#login">
+                            <i class="ti-user mr-1"></i><span class="dn-lg">{{ user }}</span>
+                        </a>
+                    </li>
+                    <li class="add-listing theme-bg">
+                        <a href="submit-property.html">
+                            <i class="ti-plus"></i>Добавить объявление
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
 </div>
 <!-- End Navigation -->
 <div class="clearfix"></div>

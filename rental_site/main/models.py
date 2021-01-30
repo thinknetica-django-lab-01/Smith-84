@@ -17,14 +17,14 @@ class Profile(models.Model):
 
 class Region(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название', unique=True, db_index=True)
-    slug = models.SlugField()
+    # slug = models.SlugField()
 
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.slug = slugify(self.name)
+    #     super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Населенный пункт'
@@ -38,9 +38,8 @@ class Ad(models.Model):
     description = models.CharField(max_length=255, default=None)
     address = models.CharField(max_length=200, default=None)
     ACTION_CHOICES = [
-        ('Продажа', 'Продажа'),
-        ('Аренда', 'Аренда'),
-        ('Посуточно', 'Посуточно')
+        ('sell', 'Продажа'),
+        ('rent', 'Аренда'),
     ]
     action = models.CharField(max_length=20, choices=ACTION_CHOICES)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to={

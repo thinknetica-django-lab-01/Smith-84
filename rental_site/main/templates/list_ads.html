@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'header.html' with current_user=current_user %}
+<div class="filterspaces">
+    <div class="container">
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-lg-9 col-md-9 col-sm-8 col-9">
+                    <div class="filterspace__controls">
+                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="rent-tab" data-toggle="pill" href="#pills-rent"
+                                   role="tab" aria-controls="pills-rent" aria-selected="true">Rent</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="buy-tab" data-toggle="pill" href="#pills-buy" role="tab"
+                                   aria-controls="pills-buy" aria-selected="false">Buy</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="sell-tab" data-toggle="pill" href="#pills-sell" role="tab"
+                                   aria-controls="pills-sell" aria-selected="false">Sell</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-4 col-3">
+                    <div class="filterspace__link">
+                        <a href="javascript_voide(0);" class="filt_link" data-toggle="modal"
+                           data-target="#searchfilter"><i class="ti-filter mr-1"></i><span>Filters</span></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<section>
+    <div class="container">
+
+        <div class="row">
+            <!-- Single Property -->
+            {% for ad in ads %}
+
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="single_property_style property_style_2 modern">
+
+                    <div class="listing_thumb_wrapper">
+                        <div class="property_gallery_slide-thumb">
+                            <a href="single-property-1.html"><img src="{{ ad }}" class="img-fluid mx-auto" alt=""></a>
+                        </div>
+                        <div class="uilist_view_thumb">
+                            <a href="#" class="uilist-btn text-warning" data-toggle="tooltip"
+                               data-original-title="304 Views"><i class="ti-eye"></i></a>
+                            <a href="#" class="uilist-btn text-success" data-toggle="tooltip"
+                               data-original-title="Compare Property"><i class="lni lni-shuffle"></i></a>
+                            <a href="#" class="uilist-btn text-danger" data-toggle="tooltip"
+                               data-original-title="Save Property"><i class="ti-heart"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="property_caption_wrappers pb-0">
+                        <div class="property_short_detail">
+                            <div class="pr_type_status">
+                                <h4 class="pr-property_title mb-1"><a href="single-property-1.html">{{ ad.address }}</a></h4>
+                                <div class="listing-location-name"><a href="single-property-1.html">{{ ad.region }}</a></div>
+                            </div>
+                            <div class="property-real-price"><a href="single-property-1.html" class="cl-blue">{{ ad.cost }}</a></div>
+                        </div>
+                    </div>
+
+                    <div class="modern_property_footer">
+                        <div class="property-lists flex-1">
+                            <ul>
+                                <li><span class="flatcons"><img src="assets/img/bed.svg" alt=""></span>3 Beds</li>
+                                <li><span class="flatcons"><img src="assets/img/bath.svg" alt=""></span>2 Baths</li>
+                            </ul>
+                        </div>
+                        <div class="fp_types">For Rent</div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% include 'footer.html' %}
+{% endblock %}
