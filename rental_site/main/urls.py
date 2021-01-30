@@ -12,3 +12,5 @@ urlpatterns = [
     path('rent/garage/', GarageRent.as_view(), name='garage_rent'),
     path('ad/<str:slug>/', AdDetail.as_view(), name='ad_detail')
 ]
+
+
