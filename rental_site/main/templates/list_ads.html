@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 {% block content %}
 {% include 'header.html' %}
 <div class="filterspaces">
     <div class="container">
         <div class="container">
             <div class="row align-items-center">
-
                 <div class="col-lg-9 col-md-9 col-sm-8 col-9">
                     <div class="filterspace__controls">
                         <ul class="nav nav-pills" id="pills-tab" role="tablist">
@@ -38,71 +38,61 @@
 </div>
 <section>
     <div class="container">
-
         <div class="row">
             <!-- Single Property -->
             {% for ad in ads %}
-
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="single_property_style property_style_2 modern">
-
-                    <div class="listing_thumb_wrapper">
-                        <div class="property_gallery_slide-thumb">
-
-                            <a href="{{ ad.get_absolute_url }}" target="_blank">
-
-                                {% for img in ad.image_set.all %}
-
-
-                                <img src="{{ img.image.url }}" class="img-fluid mx-auto" alt="">
-
-                                {% endfor %}
-
-
-                            </a>
-
-                        </div>
-
-
-                        <div class="uilist_view_thumb">
-                            <a href="#" class="uilist-btn text-warning" data-toggle="tooltip"
-                               data-original-title="304 Views"><i class="ti-eye"></i></a>
-                            <a href="#" class="uilist-btn text-success" data-toggle="tooltip"
-                               data-original-title="Compare Property"><i class="lni lni-shuffle"></i></a>
-                            <a href="#" class="uilist-btn text-danger" data-toggle="tooltip"
-                               data-original-title="Save Property"><i class="ti-heart"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="property_caption_wrappers pb-0">
-                        <div class="property_short_detail">
-                            <div class="pr_type_status">
-                                <h4 class="pr-property_title mb-1"><a href="single-property-1.html">{{ ad.address }}</a>
-                                </h4>
-                                <div class="listing-location-name"><a href="single-property-1.html">{{ ad.region }}</a>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="list-slide-box">
+                        <div class="modern-list border border-secondary">
+                            <div class="grid-category-thumb">
+                                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                  <div class="carousel-inner">
+                                  {% for img in ad.image_set.all %}
+                                      {% if forloop.first %}
+                                        <div class="carousel-item active">
+                                              <img class="d-block w-100 img-responsive" src="{{ img.image.url }}" alt="First slide">
+                                        </div>
+                                      {% else %}
+                                        <div class="carousel-item">
+                                          <img class="d-block w-100 img-responsive" src="{{ img.image.url }}" alt="First slide">
+                                        </div>
+                                      {% endif %}
+                                  {% endfor %}
+                                  </div>
+                                  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                  </a>
+                                  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                  </a>
                                 </div>
                             </div>
-                            <div class="property-real-price"><a href="single-property-1.html" class="cl-blue">{{ ad.cost }}</a></div>
+                            <div class="modern-list-content">
+                                <div class="listing-content-wrap smalls">
+                                    <h4 class="lst-title text-lowercase">
+                                        <a href="{{ ad.get_absolute_url }}" target="_blank">
+                                            {% ads_title ad %}
+                                            {{ad.content_object.total_square}}м<sup>2</sup>
+                                        </a>
+                                    </h4>
+                                    <p>{{ ad.address }}, {{ ad.region }}</p>
+                                </div>
+                                <div class="listing-footer-wrap property-lists mt-2">
+                                    <div class="property-lists flex-1">
+                                        <ul>
+                                            {% ads_options ad %}
+                                        </ul>
+                                    </div>
+                                    <h4 class="mdr-price">&#x20bd;{{ ad.cost }}</h4>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="modern_property_footer">
-                        <div class="property-lists flex-1">
-                            <ul>
-                                <li><span class="flatcons"><img src="assets/img/bed.svg" alt=""></span>{{ ad.content_object.floor }}
-                                </li>
-                                <li><span class="flatcons"><img src="assets/img/bath.svg" alt=""></span>{{ ad.content_object.total_square }}
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="fp_types">For Rent</div>
                     </div>
                 </div>
-            </div>
-
             {% endfor %}
         </div>
-
     </div>
 </section>
 {% include 'footer.html' %}

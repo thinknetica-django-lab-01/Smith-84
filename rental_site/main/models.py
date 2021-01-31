@@ -95,6 +95,9 @@ class Apartment(Realty):
         verbose_name = 'Квартира'
         verbose_name_plural = 'Квартиры'
 
+    def __str__(self):
+        return 'Квартира'
+
 
 class Room(Realty):
     floor = models.PositiveSmallIntegerField()
@@ -102,6 +105,9 @@ class Room(Realty):
     class Meta:
         verbose_name = 'Комната'
         verbose_name_plural = 'Комнаты'
+
+    def __str__(self):
+        return 'Комната'
 
 
 class Garage(Realty):
@@ -111,8 +117,14 @@ class Garage(Realty):
         verbose_name = 'Гараж'
         verbose_name_plural = 'Гаражы'
 
+    def __str__(self):
+        return 'Гараж'
+
 
 class LandPlot(Realty):
     class Meta:
         verbose_name = 'Земельный участок'
         verbose_name_plural = 'Земельные участки'
+
+    def __str__(self):
+        return 'Земля'

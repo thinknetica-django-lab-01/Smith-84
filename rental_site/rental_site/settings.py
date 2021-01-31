@@ -25,7 +25,7 @@ SECRET_KEY = '&wyey3!3a2ld2fmnhlfa-ybuu&#&t%1bk0sctr$hi79slcu*6l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysite.com', 'abakan.mysite.com', 'www.mysite.com']
+ALLOWED_HOSTS = ['mysite.com', 'abakan.mysite.com', 'www.mysite.com', 'sorsk.mysite.com']
 
 
 # Application definition

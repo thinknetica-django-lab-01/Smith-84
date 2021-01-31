@@ -1,10 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+{% include 'header.html' %}
+<div class="featured_slick_gallery gray">
+    <div class="featured_slick_gallery-slide">
+        {% for img in ad.image_set.all %}
+            <div class="featured_slick_padd"><a href="{{ img.image.url }}" class="mfp-gallery"><img src="{{ img.image.url }}" class="img-fluid mx-auto" alt="" /></a></div>
+       {% endfor %}
+    </div>
+</div>
+<section class="gray-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12 col-sm-12">
+                <!-- Single Block Wrap -->
+                <div class="property_block_wrap style-2">
+                    <div class="property_block_wrap_header">
+                        <a data-toggle="collapse" data-parent="#features" href="#clOne" aria-expanded="true"><h4 class="property_block_title">&#x20bd;{{ ad.cost }}</h4></a>
+                    </div>
+                    <div id="clOne" class="panel-collapse collapse show" aria-expanded="true">
+                        <div class="block-body">
+                            <ul class="deatil_features">
+                                <li><strong>Общая площадь:</strong>{{ ad.content_object.floor }}</li>
+                                <li><strong>Жилая:</strong>{{ ad.content_object.living_square }}</li>
+                                <li><strong>Кухня:</strong>{{ ad.content_object.kitchen_square }}</li>
+                                <li><strong>Этаж:</strong>{{ ad.content_object.floor }}</li>
+                                <li><strong>Комнат:</strong>{{ ad.content_object.number_of_rooms }}</li>
+                                <li><strong>Адрес:</strong>{{ ad.address }}</li>
+                                <li><strong>Город:</strong>{{ ad.region }}</li>
+                                <li><strong>Дата размещения:</strong>{{ ad.date_added }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Block Wrap -->
+                <div class="property_block_wrap style-2">
 
-</body>
-</html>
+                    <div class="property_block_wrap_header">
+                        <a data-toggle="collapse" data-parent="#dsrp" href="#clTwo" aria-expanded="true"><h4 class="property_block_title">Описание</h4></a>
+                    </div>
+                    <div id="clTwo" class="panel-collapse collapse show" aria-expanded="true">
+                        <div class="block-body">
+                        <p>
+                            {{ ad.description }}
+                        </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- property Sidebar -->
+            <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="property-sidebar">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'footer.html' %}
+{% endblock %}

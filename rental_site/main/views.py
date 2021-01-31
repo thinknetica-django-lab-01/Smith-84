@@ -3,7 +3,6 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from .models import *
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import get_list_or_404
 
 # Create your views here.
 
@@ -12,8 +11,7 @@ class Index(View):
     template_name = 'index.html'
 
     def get(self, request):
-        turn_on_block = True
-        return render(request, self.template_name, context={'turn_on_block': turn_on_block})
+        return render(request, self.template_name)
 
 
 
@@ -23,10 +21,19 @@ class AdsListMixin(ListView):
     context_object_name = 'ads'
     realty = None
     action = None
+    allow_empty = False
 
     def get_queryset(self):
-        query = Ad.objects.filter(region__slug='abakan', action=self.action, content_type=ContentType.objects.get_for_model(self.realty))
-        return query
+        sub_domain = self.request.META['HTTP_HOST'].split('.', 1)[0]
+        data_to_query = {
+            'action': self.action,
+            'content_type': ContentType.objects.get_for_model(self.realty)
+        }
+        if sub_domain == 'www' or sub_domain == 'mysite':
+            return Ad.objects.filter(**data_to_query)
+
+        data_to_query['region__slug'] = sub_domain
+        return Ad.objects.filter(**data_to_query)
 
 
 class ApartmentSell(AdsListMixin):
