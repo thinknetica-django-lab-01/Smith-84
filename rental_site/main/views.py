@@ -20,7 +20,7 @@ class AdsListMixin(ListView):
     context_object_name = 'ads'
     realty = None
     action = None
-    paginate_by = 1
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
