@@ -58,6 +58,8 @@ MIDDLEWARE = [
     'django_hosts.middleware.HostsResponseMiddleware'
 ]
 
+ROOT_URLCONF = 'rental_site.urls'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
