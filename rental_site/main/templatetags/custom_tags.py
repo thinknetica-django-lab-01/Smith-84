@@ -20,3 +20,10 @@ def ads_options(*args, **kwargs):
 def ads_title(*args, **kwargs):
     if str(args[0].content_object) == 'Квартира':
         return mark_safe(f'{args[0].content_object.number_of_rooms} комнатная,')
+
+
+@register.simple_tag
+def url_replace(request, field, value):
+    query_string = request.GET.copy()
+    query_string[field] = value
+    return query_string.urlencode()

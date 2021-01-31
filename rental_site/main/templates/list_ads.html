@@ -39,6 +39,15 @@
 <section>
     <div class="container">
         <div class="row">
+        <div class="single_widgets widget_tags" style="padding:0;border:0;">
+            <ul>
+                {% for tag in tags %}
+                    <li><a href="?tag={{ tag.slug }}" target="_blank">{{ tag.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        </div>
+        <div class="row">
             <!-- Single Property -->
             {% for ad in ads %}
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -85,14 +94,31 @@
                                             {% ads_options ad %}
                                         </ul>
                                     </div>
-                                    <h4 class="mdr-price">&#x20bd;{{ ad.cost }}</h4>
+                                    <h4 class="mdr-price">&#x20bd; {{ ad.cost }}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
+
         </div>
+        <!-- Pagination -->
+        {% if is_paginated %}
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <ul class="pagination p-center">
+                        {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                    <li class="page-item active"><a href="#" class="page-link">{{ i }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?{% url_replace request 'page' i %}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </section>
 {% include 'footer.html' %}

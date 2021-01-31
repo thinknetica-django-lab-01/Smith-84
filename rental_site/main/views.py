@@ -14,25 +14,28 @@ class Index(View):
         return render(request, self.template_name)
 
 
-
 class AdsListMixin(ListView):
     model = Ad
     template_name = 'list_ads.html'
     context_object_name = 'ads'
     realty = None
     action = None
-    allow_empty = False
+    paginate_by = 1
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tags'] = Tag.objects.filter(ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
+        return context
 
     def get_queryset(self):
-        sub_domain = self.request.META['HTTP_HOST'].split('.', 1)[0]
         data_to_query = {
             'action': self.action,
             'content_type': ContentType.objects.get_for_model(self.realty)
         }
-        if sub_domain == 'www' or sub_domain == 'mysite':
-            return Ad.objects.filter(**data_to_query)
+        current_tag = self.request.GET.get('tag')
+        if current_tag is not None:
+            data_to_query['tag__slug'] = current_tag
 
-        data_to_query['region__slug'] = sub_domain
         return Ad.objects.filter(**data_to_query)
 
 
