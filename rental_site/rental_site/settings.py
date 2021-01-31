@@ -135,6 +135,5 @@ SITE_ID = 1
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-ROOT_URLCONF = 'rental_site.urls'
 ROOT_HOSTCONF = 'rental_site.hosts'
 DEFAULT_HOST = 'www'
