@@ -128,3 +128,17 @@ class LandPlot(Realty):
 
     def __str__(self):
         return 'Земля'
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(blank=True)
+    ads = models.ManyToManyField(Ad)
+
+    def save(self, *args, **kwargs):
+        self.slug = f"{slugify(self.name).replace(' ', '-')}"
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Тэг'
+        verbose_name_plural = 'Тэги'
