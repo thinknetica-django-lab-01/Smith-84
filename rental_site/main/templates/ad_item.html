@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-{% include 'header.html' %}
+{% include 'components/header.html' %}
 <div class="featured_slick_gallery gray">
     <div class="featured_slick_gallery-slide">
         {% for img in ad.image_set.all %}
@@ -56,5 +56,5 @@
         </div>
     </div>
 </section>
-{% include 'footer.html' %}
+{% include 'components/footer.html' %}
 {% endblock %}
