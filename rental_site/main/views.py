@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 from .models import *
 from .forms import *
@@ -82,29 +83,29 @@ class AdDetail(DetailView):
     template_name = 'ad_item.html'
 
 
-class UserUpdate(LoginRequiredMixin, UpdateView):
+class UserUpdate(UpdateView, LoginRequiredMixin):
     model = User
-    second_model = Profile
     form_class = UserForm
     second_form_class = ProfileForm
     template_name = 'profile.html'
-    success_url = ''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile_form'] = self.second_form_class
+        profile_form = self.second_form_class(instance=self.request.user.profile)
+        context['profile_form'] = profile_form
         return context
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        current_user = self.model.objects.get(id=kwargs['pk'])
-        profile_user = self.second_model.objects.get(user=current_user)
-        form = self.form_class(request.POST, instance=current_user)
-        form2 = self.second_form_class(request.POST, instance=profile_user)
-
-        if form.is_valid() and form2.is_valid():
-            form.save()
-            form2.save()
-            return redirect(self.get_success_url())
+        self.object = self.get_object()
+        user_form = self.form_class(request.POST, instance=self.request.user)
+        profile_form = self.second_form_class(request.POST, instance=self.request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save(commit=False)
+            user.save()
+            profile = profile_form.save(commit=False)
+            profile.save()
+            messages.success(request, 'Данные успешно обновлены')
         else:
-            return self.render_to_response(self.get_context_data(form=form, form2=form2))
+            messages.error(request, 'Ошибка!')
+
+        return self.render_to_response(self.get_context_data())
