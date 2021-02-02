@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import *
@@ -83,5 +84,27 @@ class AdDetail(DetailView):
 
 class UserUpdate(LoginRequiredMixin, UpdateView):
     model = User
-    form_class = UserProfileForm
+    second_model = Profile
+    form_class = UserForm
+    second_form_class = ProfileForm
     template_name = 'profile.html'
+    success_url = ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_form'] = self.second_form_class
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        current_user = self.model.objects.get(id=kwargs['pk'])
+        profile_user = self.second_model.objects.get(user=current_user)
+        form = self.form_class(request.POST, instance=current_user)
+        form2 = self.second_form_class(request.POST, instance=profile_user)
+
+        if form.is_valid() and form2.is_valid():
+            form.save()
+            form2.save()
+            return redirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form, form2=form2))
