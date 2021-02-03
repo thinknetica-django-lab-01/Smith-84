@@ -1,6 +1,7 @@
 from django import forms
 from .models import User, Profile
 from django.core.exceptions import ValidationError
+from django.contrib.contenttypes.forms import generic_inlineformset_factory
 
 
 class UserForm(forms.ModelForm):

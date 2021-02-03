@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.forms import generic_inlineformset_factory
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -83,11 +84,12 @@ class AdDetail(DetailView):
     template_name = 'ad_item.html'
 
 
-class UserUpdate(UpdateView, LoginRequiredMixin):
+class UserUpdate(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserForm
     second_form_class = ProfileForm
     template_name = 'profile.html'
+    redirect_field_name = 'login.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,3 +111,43 @@ class UserUpdate(UpdateView, LoginRequiredMixin):
             messages.error(request, 'Ошибка!')
 
         return self.render_to_response(self.get_context_data())
+
+
+def add_realty_ad(request):
+    form = generic_inlineformset_factory(Ad, extra=1, can_delete=False)
+    if request.method == 'POST':
+        pass
+    else:
+        pass
+        # form = AddFormSet
+    return render(request, 'add_new_ad.html', context={'form': form})
+
+
+class EditRealtyAd(UpdateView):
+    pass
+
+
+
+#     uniq_id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
+#     region = models.ForeignKey(Region, on_delete=models.CASCADE)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     cost = models.PositiveIntegerField()
+#     description = models.CharField(max_length=255, default=None)
+#     address = models.CharField(max_length=200, default=None)
+#     slug = models.SlugField(blank=True)
+#     date_added = models.DateField(auto_now_add=True)
+#     ACTION_CHOICES = [
+#         ('sell', 'Продажа'),
+#         ('rent', 'Аренда'),
+#     ]
+#     action = models.CharField(max_length=20, choices=ACTION_CHOICES)
+#     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to={
+#         'model__in': (
+#             'apartment',
+#             'room',
+#             'garage',
+#             'landplot'
+#         )
+#     })
+#     object_id = models.PositiveIntegerField()
+#     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
