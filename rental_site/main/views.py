@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import ListView, DetailView
-from .models import *
+from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .models import *
+from .forms import *
 # Create your views here.
 
 
@@ -78,3 +80,8 @@ class AdDetail(DetailView):
     model = Ad
     template_name = 'ad_item.html'
 
+
+class UserUpdate(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserProfileForm
+    template_name = 'profile.html'
