@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from django.urls import include
 
 urlpatterns = [
     path('', Index.as_view()),
@@ -12,4 +13,5 @@ urlpatterns = [
     path('rent/garage/', GarageRent.as_view(), name='garage_rent'),
     path('ad/<str:slug>/', AdDetail.as_view(), name='ad_detail'),
     path('accounts/profile/<int:pk>/', UserUpdate.as_view(), name='user_profile'),
+    path('accounts/', include('django.contrib.auth.urls'))
 ]
