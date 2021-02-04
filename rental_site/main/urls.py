@@ -13,9 +13,13 @@ urlpatterns = [
     path('rent/garage/', GarageRent.as_view(), name='garage_rent'),
     path('ad/<str:slug>/', AdDetail.as_view(), name='ad_detail'),
 
-    path('realty-ad/add-new/', add_realty_ad, name='add_new_ad'),
-    # path('ad/<int:pk>/edit', EditRealtyAd.as_view(), name='edit_ad'),
+    path('accounts/', include('django.contrib.auth.urls')),
+
+    path('ad/add/<str:realty>/', add_realty_ad, name='add_new_ad'),
+    path('ad/<int:pk>/edit/', EditRealtyAd.as_view(), name='edit_ad'),
+
+
 
     path('accounts/profile/<int:pk>/', UserUpdate.as_view(), name='user_profile'),
-    path('accounts/', include('django.contrib.auth.urls'))
+
 ]

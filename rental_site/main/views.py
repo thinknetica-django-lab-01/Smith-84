@@ -3,6 +3,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.forms import generic_inlineformset_factory
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -113,14 +114,30 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
         return self.render_to_response(self.get_context_data())
 
 
-def add_realty_ad(request):
-    form = generic_inlineformset_factory(Ad, extra=1, can_delete=False)
+def add_realty_ad(request, **kwargs):
+    all_forms = {
+        'apartment': ApartmentForm,
+        'room': RoomForm,
+        'garage': GarageForm,
+        'land-plot': LandPlotForm
+    }
+    current_realty_type = kwargs.get('realty')
+    if current_realty_type not in all_forms:
+        return HttpResponseNotFound('404')
+
+    form = ''
+    form2 = all_forms[current_realty_type]
+
+    # print(ContentType.objects.get(model=current_realty_type))
+    # form = generic_inlineformset_factory(Ad, extra=1, can_delete=False)
+    # generic_inlineformset_factory(model, form=ModelForm, formset=BaseGenericInlineFormSet, ct_field="content_type",
+    #                              fk_field="object_id", fields=None, exclude=None, extra=3, can_order=False,
+    #                              can_delete=True, max_num=None, formfield_callback=None, validate_max=False,
+    #                              for_concrete_model=True, min_num=None, validate_min=False)
     if request.method == 'POST':
         pass
     else:
-        pass
-        # form = AddFormSet
-    return render(request, 'add_new_ad.html', context={'form': form})
+        return render(request, 'add_new_ad.html', context={'form': form, 'form2': form2})
 
 
 class EditRealtyAd(UpdateView):
