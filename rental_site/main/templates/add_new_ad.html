@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 {% include 'components/header.html' %}
-    {{  form.as_p }}
-    {{  form2.as_p }}
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        {{  form.as_p }}
+                                         {{ form2.as_p }}
+                                        <div class="form-group col-lg-12 col-md-12">
+                                            <button class="btn btn-theme bg-2" type="submit">Save Changes</button>
+                                        </div>
+                                    </form>
 {% include 'components/footer.html' %}
 {% endblock %}

@@ -23,6 +23,12 @@ class ProfileForm(forms.ModelForm):
         return current_age
 
 
+class AdForm(forms.ModelForm):
+    class Meta:
+        model = Ad
+        fields = ('region', 'description', 'cost', 'address', 'action', )
+
+
 class ApartmentForm(forms.ModelForm):
     class Meta:
         model = Apartment
@@ -44,4 +50,10 @@ class LandPlotForm(forms.ModelForm):
 class GarageForm(forms.ModelForm):
     class Meta:
         model = Garage
+        fields = '__all__'
+
+
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = Image
         fields = '__all__'

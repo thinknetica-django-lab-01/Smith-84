@@ -3,7 +3,8 @@ from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.forms import generic_inlineformset_factory
-from django.http import HttpResponseNotFound
+from django.forms.models import inlineformset_factory
+from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -115,56 +116,35 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
 
 
 def add_realty_ad(request, **kwargs):
-    all_forms = {
+    all_formsets = {
         'apartment': ApartmentForm,
         'room': RoomForm,
         'garage': GarageForm,
         'land-plot': LandPlotForm
     }
-    current_realty_type = kwargs.get('realty')
-    if current_realty_type not in all_forms:
+    realty_type = kwargs.get('realty')
+    if realty_type not in all_formsets:
         return HttpResponseNotFound('404')
 
-    form = ''
-    form2 = all_forms[current_realty_type]
+    form_ad = generic_inlineformset_factory(Ad, form=AdForm, extra=1, can_delete=False)
+    form_realty = all_formsets[realty_type]
 
-    # print(ContentType.objects.get(model=current_realty_type))
-    # form = generic_inlineformset_factory(Ad, extra=1, can_delete=False)
-    # generic_inlineformset_factory(model, form=ModelForm, formset=BaseGenericInlineFormSet, ct_field="content_type",
-    #                              fk_field="object_id", fields=None, exclude=None, extra=3, can_order=False,
-    #                              can_delete=True, max_num=None, formfield_callback=None, validate_max=False,
-    #                              for_concrete_model=True, min_num=None, validate_min=False)
     if request.method == 'POST':
-        pass
+        realty_form = form_realty(request.POST)
+        if realty_form.is_valid():
+            saved_obj = realty_form.save(commit=False)
+            ad_form = form_ad(request.POST, instance=saved_obj)
+            if ad_form.is_valid():
+                saved_obj.save()
+                ad_form.save()
+            else:
+                pass
+
+        return HttpResponse('Ok')
     else:
-        return render(request, 'add_new_ad.html', context={'form': form, 'form2': form2})
+        return render(request, 'add_new_ad.html', context={'form': form_ad, 'form2': form_realty})
+
 
 
 class EditRealtyAd(UpdateView):
     pass
-
-
-
-#     uniq_id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
-#     region = models.ForeignKey(Region, on_delete=models.CASCADE)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     cost = models.PositiveIntegerField()
-#     description = models.CharField(max_length=255, default=None)
-#     address = models.CharField(max_length=200, default=None)
-#     slug = models.SlugField(blank=True)
-#     date_added = models.DateField(auto_now_add=True)
-#     ACTION_CHOICES = [
-#         ('sell', 'Продажа'),
-#         ('rent', 'Аренда'),
-#     ]
-#     action = models.CharField(max_length=20, choices=ACTION_CHOICES)
-#     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to={
-#         'model__in': (
-#             'apartment',
-#             'room',
-#             'garage',
-#             'landplot'
-#         )
-#     })
-#     object_id = models.PositiveIntegerField()
-#     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
