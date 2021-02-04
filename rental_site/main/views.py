@@ -125,26 +125,62 @@ def add_realty_ad(request, **kwargs):
     realty_type = kwargs.get('realty')
     if realty_type not in all_formsets:
         return HttpResponseNotFound('404')
-
-    form_ad = generic_inlineformset_factory(Ad, form=AdForm, extra=1, can_delete=False)
-    form_realty = all_formsets[realty_type]
+    formset_ad = generic_inlineformset_factory(Ad, form=AdForm, extra=1, can_delete=False)
+    formset_realty = all_formsets[realty_type]
 
     if request.method == 'POST':
-        realty_form = form_realty(request.POST)
+        realty_form = formset_realty(request.POST)
         if realty_form.is_valid():
-            saved_obj = realty_form.save(commit=False)
-            ad_form = form_ad(request.POST, instance=saved_obj)
+            realty_obj = realty_form.save(commit=False)
+            ad_form = formset_ad(data=request.POST, instance=realty_obj)
             if ad_form.is_valid():
-                saved_obj.save()
+                realty_obj.save()
+                ad_obj = ad_form.save(commit=False)
+                for data in ad_obj:
+                    data.user = request.user
                 ad_form.save()
+                return HttpResponse('Ok')
             else:
-                pass
-
-        return HttpResponse('Ok')
+                print(ad_form.errors)
+                return HttpResponse('ad_form in not valid')
+        else:
+            return HttpResponse('realty_form in not valid')
     else:
-        return render(request, 'add_new_ad.html', context={'form': form_ad, 'form2': form_realty})
-
+        return render(request, 'add_new_ad.html', context={'form': formset_ad, 'form2': formset_realty})
 
 
 class EditRealtyAd(UpdateView):
-    pass
+    model = Ad
+    form_class = AdForm
+    template_name = 'ad-edit.html'
+    second_form_class = None
+    form_class_sets = {
+        'apartment': ApartmentForm,
+        'room': RoomForm,
+        'garage': GarageForm,
+        'land-plot': LandPlotForm
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.second_form_class = GarageForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        additional_form = self.second_form_class(instance=self.object.content_object)
+        context['form2'] = additional_form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        ad_form = self.form_class(request.POST, instance=self.object)
+        additional_form = self.second_form_class(request.POST, instance=self.object.content_object)
+
+        if ad_form.is_valid() and additional_form.is_valid():
+            ad = ad_form.save(commit=False)
+            ad.save()
+            additional = additional_form.save(commit=False)
+            additional.save()
+            messages.success(request, 'Данные успешно обновлены')
+
+        return self.render_to_response(self.get_context_data())

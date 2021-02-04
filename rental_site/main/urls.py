@@ -16,7 +16,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('ad/add/<str:realty>/', add_realty_ad, name='add_new_ad'),
-    path('ad/<int:pk>/edit/', EditRealtyAd.as_view(), name='edit_ad'),
+    path('ad/edit/<str:pk>/', EditRealtyAd.as_view(), name='edit_ad'),
 
 
 
