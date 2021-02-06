@@ -23,7 +23,6 @@ urlpatterns = [
     path('ad/add/garage/', AddGarage.as_view(), name='add_garage'),
     path('ad/add/land-plot/', AddLandPlot.as_view(), name='add_land_plot'),
 
-    path('ad/add/photos/', SaveImages.as_view(), name='add_image'),
-
+    path('ad/add/photos/<str:pk>/', SaveImages.as_view(), name='add_image'),
     path('ad/edit/<str:pk>/', EditRealtyAd.as_view(), name='edit_ad'),
 ]
