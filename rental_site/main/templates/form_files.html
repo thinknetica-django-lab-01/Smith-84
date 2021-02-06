@@ -1,0 +1,27 @@
+{% extends 'dashboard.html' %}
+{% load crispy_forms_tags %}
+{% block dashboard_content %}
+    <!-- Basic Information -->
+    <div class="frm_submit_block">
+        <h4>{{ title }}</h4>
+        <div class="frm_submit_wrap">
+            {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}" role="alert">
+                      {{ message }}
+                  </div>
+              {% endfor %}
+            {% endif %}
+            <div class="form-row">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy  }}
+                    {{ form2|crispy }}
+                    <div class="form-group col-lg-12 col-md-12 mt-3">
+                        <button class="btn btn-theme bg-2" type="submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
