@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load crispy_forms_tags %}
 {% include 'components/header.html' %}
 			<!-- ============================ Register Start ================================== -->
 			<section>
@@ -27,30 +28,10 @@
 										<div class="modal-divider"><span>Or</span></div>
 
 										<div class="login-form">
-											<form>
 
-												<div class="row">
-
-													<div class="col-lg-12 col-md-12">
-														<div class="form-group">
-															<div class="input-with-icon">
-																<input type="email" class="form-control" placeholder="Enter userbane or email">
-																<i class="ti-email"></i>
-															</div>
-														</div>
-													</div>
-
-													<div class="col-lg-12 col-md-12">
-														<div class="form-group">
-															<div class="input-with-icon">
-																<input type="password" class="form-control" placeholder="Enter password">
-																<i class="ti-unlock"></i>
-															</div>
-														</div>
-													</div>
-
-												</div>
-
+											<form method="post" class="form-group">
+												{% csrf_token %}
+												{{ form|crispy }}
 												<div class="form-group">
 													<button type="submit" class="btn btn-md full-width pop-login bg-2">Sign In</button>
 												</div>
