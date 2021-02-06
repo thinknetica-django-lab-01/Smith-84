@@ -247,7 +247,7 @@ class SaveImages(UpdateView):
 class EditRealtyAd(LoginRequiredMixin, UpdateView):
     """
         Редактирование страницы объявления
-        Какую форму с доп данными подгрузить определяем из content_type
+        Какую форму с доп данными подгружаем и определяем из content_type
     """
     model = Ad
     form_class = AdForm
