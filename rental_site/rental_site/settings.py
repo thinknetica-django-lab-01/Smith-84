@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'pytils',
     'main',
+    'crispy_forms',
     # 'django_hosts'
 ]
 
@@ -137,3 +138,5 @@ MEDIA_URL = '/media/'
 
 # ROOT_HOSTCONF = 'rental_site.hosts'
 # DEFAULT_HOST = 'www'
+
+LOGIN_REDIRECT_URL = "/dashboard/"
