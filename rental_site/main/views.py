@@ -225,7 +225,7 @@ class AddGarage(AddRealtyAdMixin):
     form_class = GarageForm
 
 
-class SaveImages(UpdateView):
+class SaveImages(LoginRequiredMixin, UpdateView):
     """
         Добавление картинок к объявлению
     """
