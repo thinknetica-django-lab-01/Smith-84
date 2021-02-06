@@ -170,6 +170,7 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
     form_class = None
     second_form_class = generic_inlineformset_factory(Ad, form=AdForm, extra=1, can_delete=False)
     template_name = 'form.html'
+    redirect_field_name = 'login.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -232,6 +233,7 @@ class SaveImages(LoginRequiredMixin, UpdateView):
     model = Ad
     form_class = inlineformset_factory(Ad, Image, fields=('image',), extra=3, min_num=1)
     template_name = 'form_files.html'
+    redirect_field_name = 'login.html'
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
