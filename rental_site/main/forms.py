@@ -1,7 +1,6 @@
 from django import forms
 from .models import *
 from django.core.exceptions import ValidationError
-from django.contrib.contenttypes.forms import generic_inlineformset_factory
 
 
 class UserForm(forms.ModelForm):
@@ -50,10 +49,4 @@ class LandPlotForm(forms.ModelForm):
 class GarageForm(forms.ModelForm):
     class Meta:
         model = Garage
-        fields = '__all__'
-
-
-class ImageForm(forms.ModelForm):
-    class Meta:
-        model = Image
         fields = '__all__'
