@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     'pytils',
     'main',
     'crispy_forms',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     # 'django_hosts'
 ]
 
@@ -132,7 +136,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-SITE_ID = 1
+SITE_ID = 2
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -140,3 +144,9 @@ MEDIA_URL = '/media/'
 # DEFAULT_HOST = 'www'
 
 LOGIN_REDIRECT_URL = "/dashboard/"
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]

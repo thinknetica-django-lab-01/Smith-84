@@ -13,7 +13,9 @@ urlpatterns = [
     path('rent/garage/', GarageRent.as_view(), name='garage_rent'),
     path('ad/<str:slug>/', AdDetail.as_view(), name='ad_detail'),
 
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
+
+
     path('dashboard/', Dashboard.as_view(), name='dashboard'),
     path('dashboard/add/', RealtyList.as_view(), name='choice_type'),
     path('accounts/profile/<int:pk>/', UserUpdate.as_view(), name='edit_user_profile'),

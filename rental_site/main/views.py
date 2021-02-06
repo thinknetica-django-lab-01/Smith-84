@@ -8,6 +8,9 @@ from django.forms.models import inlineformset_factory
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from allauth.account.forms import SignupForm
+from allauth.account.signals import user_signed_up
+from django.dispatch import receiver, Signal
 
 from .models import *
 from .forms import *
@@ -129,7 +132,7 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     form_class = UserForm
     second_form_class = ProfileForm
     template_name = 'form.html'
-    redirect_field_name = 'login.html'
+    redirect_field_name = 'accounts/login/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -154,10 +157,13 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
         return self.render_to_response(self.get_context_data())
 
 
-class RealtyList(View):
+class RealtyList(LoginRequiredMixin, View):
     """
         Страница с выбором - что хотим добавить
     """
+    login_url = '/accounts/signup/'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         return render(request, 'choice_type.html')
 
@@ -170,7 +176,7 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
     form_class = None
     second_form_class = generic_inlineformset_factory(Ad, form=AdForm, extra=1, can_delete=False)
     template_name = 'form.html'
-    redirect_field_name = 'login.html'
+    redirect_field_name = 'accounts/login/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -233,7 +239,7 @@ class SaveImages(LoginRequiredMixin, UpdateView):
     model = Ad
     form_class = inlineformset_factory(Ad, Image, fields=('image',), extra=3, min_num=1)
     template_name = 'form_files.html'
-    redirect_field_name = 'login.html'
+    redirect_field_name = 'accounts/login/'
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -261,7 +267,7 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
         'Гараж': GarageForm,
         'Земельный участок': LandPlotForm
     }
-    redirect_field_name = 'login.html'
+    redirect_field_name = 'accounts/login/'
 
     def get_second_form_class(self):
         """
@@ -293,3 +299,10 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
             messages.error(request, 'Ошибка!')
 
         return self.render_to_response(self.get_context_data())
+
+
+@receiver(user_signed_up)
+def create_profile(sender, **kwargs):
+    user = User.objects.get(username=kwargs['user'].username)
+    user_profile = Profile.objects.create(user=user, phone_number='888', age='18')
+    user_profile.save()
