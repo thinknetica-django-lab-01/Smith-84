@@ -182,13 +182,13 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
             ad_form = self.second_form_class(data=self.request.POST, instance=obj)
             if ad_form.is_valid():
                 obj.save()
-                new_ad = None
+                ad_pk = None
                 ad_obj = ad_form.save(commit=False)
                 for ad in ad_obj:
                     ad.user = self.request.user
-                    new_ad = ad.uniq_id
+                    ad_pk = ad.uniq_id
                     ad.save()
-                return redirect(reverse('add_image', args=[new_ad]))
+                return redirect(reverse('add_image', args=[ad_pk]))
             else:
                 return self.render_to_response(self.get_context_data())
 
