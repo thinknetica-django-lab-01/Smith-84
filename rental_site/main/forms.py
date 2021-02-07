@@ -12,7 +12,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('age', )
+        fields = ('age', 'phone_number',)
 
     def clean_age(self):
         current_age = self.cleaned_data['age']

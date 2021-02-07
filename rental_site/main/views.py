@@ -1,4 +1,3 @@
-from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
@@ -8,9 +7,8 @@ from django.forms.models import inlineformset_factory
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from allauth.account.forms import SignupForm
-from allauth.account.signals import user_signed_up
-from django.dispatch import receiver, Signal
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 from .models import *
 from .forms import *
@@ -301,8 +299,8 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
         return self.render_to_response(self.get_context_data())
 
 
-@receiver(user_signed_up)
-def create_profile(sender, **kwargs):
-    user = User.objects.get(username=kwargs['user'].username)
-    user_profile = Profile.objects.create(user=user, phone_number='888', age='18')
-    user_profile.save()
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile.objects.create(user=instance)
+        user_profile.save()

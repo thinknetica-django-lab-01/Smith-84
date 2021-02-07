@@ -11,8 +11,8 @@ from pytils.translit import slugify
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=12, default=True, unique=True)
-    age = models.PositiveSmallIntegerField()
+    phone_number = models.CharField(max_length=12, blank=True)
+    age = models.PositiveSmallIntegerField(blank=True, null=True)
 
     def __str__(self):
         return 'Profile for user {}'.format(self.user)
