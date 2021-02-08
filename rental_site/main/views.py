@@ -182,10 +182,13 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
         context['form2'] = self.second_form_class
         return context
 
-    def form_valid(self, form):
-        if form.is_valid():
-            obj = form.save(commit=False)
+    def post(self, request, *args, **kwargs):
+        main_form = self.form_class(request.POST)
+        if main_form.is_valid():
+            obj = main_form.save(commit=False)
+            print(obj)
             ad_form = self.second_form_class(data=self.request.POST, instance=obj)
+            print(ad_form.is_valid())
             if ad_form.is_valid():
                 obj.save()
                 ad_pk = None
