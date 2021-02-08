@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Profile
+from .models import *
 from django.core.exceptions import ValidationError
 
 
@@ -20,3 +20,33 @@ class ProfileForm(forms.ModelForm):
             raise ValidationError('Вы слишком молоды')
 
         return current_age
+
+
+class AdForm(forms.ModelForm):
+    class Meta:
+        model = Ad
+        fields = ('region', 'description', 'cost', 'address', 'action', )
+
+
+class ApartmentForm(forms.ModelForm):
+    class Meta:
+        model = Apartment
+        fields = '__all__'
+
+
+class RoomForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = '__all__'
+
+
+class LandPlotForm(forms.ModelForm):
+    class Meta:
+        model = LandPlot
+        fields = '__all__'
+
+
+class GarageForm(forms.ModelForm):
+    class Meta:
+        model = Garage
+        fields = '__all__'
