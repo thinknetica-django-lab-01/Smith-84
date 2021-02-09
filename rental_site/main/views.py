@@ -136,7 +136,7 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profile_form = self.second_form_class(instance=self.request.user.profile)
-        context['form2'] = profile_form
+        context['additional_form'] = profile_form
         context['title'] = 'Данные профиля'
         return context
 
@@ -151,7 +151,7 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
             profile.save()
             messages.success(request, 'Данные успешно обновлены')
         else:
-            messages.error(request, 'Ошибка!')
+            messages.error(request, f'Ошибка! {profile_form.errors.as_text()} {user_form.errors.as_text()} ')
 
         return self.render_to_response(self.get_context_data())
 
@@ -179,16 +179,13 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form2'] = self.second_form_class
+        context['additional_form'] = self.second_form_class
         return context
 
-    def post(self, request, *args, **kwargs):
-        main_form = self.form_class(request.POST)
-        if main_form.is_valid():
-            obj = main_form.save(commit=False)
-            print(obj)
+    def form_valid(self, form):
+        if form.is_valid():
+            obj = form.save(commit=False)
             ad_form = self.second_form_class(data=self.request.POST, instance=obj)
-            print(ad_form.is_valid())
             if ad_form.is_valid():
                 obj.save()
                 ad_pk = None
@@ -196,10 +193,11 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
                 for ad in ad_obj:
                     ad.user = self.request.user
                     ad_pk = ad.uniq_id
-                    ad.save()
-                return redirect(reverse('add_image', args=[ad_pk]))
-            else:
-                return self.render_to_response(self.get_context_data())
+                    if ad_pk is not None:
+                        ad.save()
+                        return redirect(reverse('add_image', args=[ad_pk]))
+
+        return self.render_to_response(self.get_context_data())
 
 
 class AddApartment(AddRealtyAdMixin):
@@ -282,7 +280,7 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
         self.second_form_class = self.get_second_form_class()
         additional_form = self.second_form_class(instance=self.object.content_object)
         context['title'] = 'Редактирование объявления'
-        context['form2'] = additional_form
+        context['additional_form'] = additional_form
         return context
 
     def post(self, request, *args, **kwargs):

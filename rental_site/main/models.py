@@ -39,8 +39,8 @@ class Ad(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     cost = models.PositiveIntegerField()
-    description = models.CharField(max_length=255, default=None)
-    address = models.CharField(max_length=200, default=None)
+    description = models.CharField(max_length=255)
+    address = models.CharField(max_length=200)
     slug = models.SlugField(blank=True)
     date_added = models.DateField(auto_now_add=True)
     ACTION_CHOICES = [
