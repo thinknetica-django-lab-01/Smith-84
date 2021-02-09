@@ -10,6 +10,8 @@ from django.contrib import messages
 
 from .models import *
 from .forms import *
+
+
 # Create your views here.
 
 
@@ -33,7 +35,8 @@ class AdsListMixin(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tags'] = Tag.objects.filter(ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
+        context['tags'] = Tag.objects.filter(
+            ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
         return context
 
     def get_queryset(self):
@@ -116,6 +119,7 @@ class Dashboard(LoginRequiredMixin, View):
     """
         Личный кабинет пользователя
     """
+
     def get(self, request):
         return render(request, 'dashboard.html')
 
@@ -238,7 +242,7 @@ class SaveImages(PermissionRequiredMixin, UpdateView):
     form_class = inlineformset_factory(Ad, Image, fields=('image',), extra=3, min_num=1)
     template_name = 'form_files.html'
     redirect_field_name = 'accounts/login/'
-    permission_required = 'main.add_ad'
+    permission_required = 'main.change_ad'
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
