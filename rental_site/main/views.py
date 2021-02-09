@@ -193,10 +193,10 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
                 for ad in ad_obj:
                     ad.user = self.request.user
                     ad_pk = ad.uniq_id
-                    if ad_pk is not None:
-                        ad.save()
-                        return redirect(reverse('add_image', args=[ad_pk]))
-
+                    ad.save()
+                return redirect(reverse('add_image', args=[ad_pk]))
+            else:
+                messages.error(self.request, f'Ошибка! {ad_form.errors.as_text()}')
         return self.render_to_response(self.get_context_data())
 
 
@@ -248,7 +248,7 @@ class SaveImages(LoginRequiredMixin, UpdateView):
             image_form.save()
             return redirect(reverse('ad_detail', kwargs={'slug': self.object.slug}))
         else:
-            messages.error(request, 'Ошибка!')
+            messages.error(request, f'Ошибка! {image_form.errors.as_text()}')
             return self.render_to_response(self.get_context_data())
 
 
@@ -262,10 +262,10 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
     template_name = 'form.html'
     second_form_class = None
     form_class_sets = {
-        'Квартира': ApartmentForm,
-        'Комната': RoomForm,
-        'Гараж': GarageForm,
-        'Земельный участок': LandPlotForm
+        'Apartment': ApartmentForm,
+        'Room': RoomForm,
+        'Garage': GarageForm,
+        'LandPlot': LandPlotForm
     }
     redirect_field_name = 'accounts/login/'
 
@@ -273,7 +273,7 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
         """
             Возвращаем вторую форму в зависимости от типа объявления
         """
-        return self.form_class_sets[self.object.content_type.name]
+        return self.form_class_sets[self.object.content_type.model_class().__name__]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -296,7 +296,7 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
             additional.save()
             messages.success(request, 'Данные успешно обновлены')
         else:
-            messages.error(request, 'Ошибка!')
+            messages.error(request, f'Ошибка! {ad_form.errors.as_text()}')
 
         return self.render_to_response(self.get_context_data())
 

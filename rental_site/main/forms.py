@@ -14,6 +14,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ('age', 'phone_number',)
 
+
     def clean_age(self):
         current_age = self.cleaned_data['age']
         if int(current_age) < 18:
