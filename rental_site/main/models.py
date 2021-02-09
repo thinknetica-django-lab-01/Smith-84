@@ -11,8 +11,8 @@ from pytils.translit import slugify
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=12, default=True, unique=True)
-    age = models.PositiveSmallIntegerField()
+    phone_number = models.CharField(max_length=12, blank=True)
+    age = models.PositiveSmallIntegerField(blank=True, null=True)
 
     def __str__(self):
         return 'Profile for user {}'.format(self.user)
@@ -39,8 +39,8 @@ class Ad(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     cost = models.PositiveIntegerField()
-    description = models.CharField(max_length=255, default=None)
-    address = models.CharField(max_length=200, default=None)
+    description = models.CharField(max_length=255)
+    address = models.CharField(max_length=200)
     slug = models.SlugField(blank=True)
     date_added = models.DateField(auto_now_add=True)
     ACTION_CHOICES = [

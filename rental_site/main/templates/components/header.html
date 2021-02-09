@@ -38,15 +38,30 @@
 
                 <ul class="nav-menu nav-menu-social align-to-right">
                     <li>
-                        <a href="#" data-toggle="modal" data-target="#login">
-                            <i class="ti-user mr-1"></i><span class="dn-lg">{{ user }}</span>
-                        </a>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'dashboard' %}">
+                                <i class="ti-user mr-1"></i><span class="dn-lg">{{ user }}</span>
+                            </a>
+                            <a href="{% url 'account_logout' %}">
+                                Выход
+                            </a>
+                        {% else %}
+                            <a href="{% url 'account_login' %}">
+                                <i class="ti-user mr-1"></i><span class="dn-lg">Вход</span>
+                            </a>
+                        {% endif %}
+
+
                     </li>
-                    <li class="add-listing theme-bg">
-                        <a href="">
-                            <i class="ti-plus"></i>Добавить объявление
-                        </a>
-                    </li>
+                        {% if user.is_authenticated %}
+                        {% else %}
+                            <li class="add-listing theme-bg">
+                                <a href="{% url 'choice_type' %}">
+                                    <i class="ti-plus"></i>Добавить объявление
+                                </a>
+                            </li>
+                        {% endif %}
+
                 </ul>
             </div>
         </nav>

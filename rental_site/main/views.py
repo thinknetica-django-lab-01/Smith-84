@@ -1,4 +1,3 @@
-from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
@@ -8,6 +7,9 @@ from django.forms.models import inlineformset_factory
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User, Group
 
 from .models import *
 from .forms import *
@@ -129,12 +131,12 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     form_class = UserForm
     second_form_class = ProfileForm
     template_name = 'form.html'
-    redirect_field_name = 'login.html'
+    redirect_field_name = 'accounts/login/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profile_form = self.second_form_class(instance=self.request.user.profile)
-        context['form2'] = profile_form
+        context['additional_form'] = profile_form
         context['title'] = 'Данные профиля'
         return context
 
@@ -149,15 +151,18 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
             profile.save()
             messages.success(request, 'Данные успешно обновлены')
         else:
-            messages.error(request, 'Ошибка!')
+            messages.error(request, f'Ошибка! {profile_form.errors.as_text()} {user_form.errors.as_text()} ')
 
         return self.render_to_response(self.get_context_data())
 
 
-class RealtyList(View):
+class RealtyList(LoginRequiredMixin, View):
     """
         Страница с выбором - что хотим добавить
     """
+    login_url = '/accounts/signup/'
+    redirect_field_name = 'redirect_to'
+
     def get(self, request):
         return render(request, 'choice_type.html')
 
@@ -170,11 +175,11 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
     form_class = None
     second_form_class = generic_inlineformset_factory(Ad, form=AdForm, extra=1, can_delete=False)
     template_name = 'form.html'
-    redirect_field_name = 'login.html'
+    redirect_field_name = 'accounts/login/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form2'] = self.second_form_class
+        context['additional_form'] = self.second_form_class
         return context
 
     def form_valid(self, form):
@@ -191,7 +196,8 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
                     ad.save()
                 return redirect(reverse('add_image', args=[ad_pk]))
             else:
-                return self.render_to_response(self.get_context_data())
+                messages.error(self.request, f'Ошибка! {ad_form.errors.as_text()}')
+        return self.render_to_response(self.get_context_data())
 
 
 class AddApartment(AddRealtyAdMixin):
@@ -233,7 +239,7 @@ class SaveImages(LoginRequiredMixin, UpdateView):
     model = Ad
     form_class = inlineformset_factory(Ad, Image, fields=('image',), extra=3, min_num=1)
     template_name = 'form_files.html'
-    redirect_field_name = 'login.html'
+    redirect_field_name = 'accounts/login/'
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -242,7 +248,7 @@ class SaveImages(LoginRequiredMixin, UpdateView):
             image_form.save()
             return redirect(reverse('ad_detail', kwargs={'slug': self.object.slug}))
         else:
-            messages.error(request, 'Ошибка!')
+            messages.error(request, f'Ошибка! {image_form.errors.as_text()}')
             return self.render_to_response(self.get_context_data())
 
 
@@ -256,25 +262,25 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
     template_name = 'form.html'
     second_form_class = None
     form_class_sets = {
-        'Квартира': ApartmentForm,
-        'Комната': RoomForm,
-        'Гараж': GarageForm,
-        'Земельный участок': LandPlotForm
+        'Apartment': ApartmentForm,
+        'Room': RoomForm,
+        'Garage': GarageForm,
+        'LandPlot': LandPlotForm
     }
-    redirect_field_name = 'login.html'
+    redirect_field_name = 'accounts/login/'
 
     def get_second_form_class(self):
         """
             Возвращаем вторую форму в зависимости от типа объявления
         """
-        return self.form_class_sets[self.object.content_type.name]
+        return self.form_class_sets[self.object.content_type.model_class().__name__]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.second_form_class = self.get_second_form_class()
         additional_form = self.second_form_class(instance=self.object.content_object)
         context['title'] = 'Редактирование объявления'
-        context['form2'] = additional_form
+        context['additional_form'] = additional_form
         return context
 
     def post(self, request, *args, **kwargs):
@@ -290,6 +296,19 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
             additional.save()
             messages.success(request, 'Данные успешно обновлены')
         else:
-            messages.error(request, 'Ошибка!')
+            messages.error(request, f'Ошибка! {ad_form.errors.as_text()}')
 
         return self.render_to_response(self.get_context_data())
+
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile.objects.create(user=instance)
+        user_profile.save()
+
+
+@receiver(post_save, sender=User)
+def add_user_to_group(sender, instance, created, **kwargs):
+    common_users, _ = Group.objects.get_or_create(name="common_users")
+    instance.groups.add(common_users)

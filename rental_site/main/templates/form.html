@@ -16,9 +16,9 @@
                 <form method="post">
                     {% csrf_token %}
                     {{ form|crispy  }}
-                    {{ form2|crispy }}
+                    {{ additional_form|crispy }}
                     <div class="form-group col-lg-12 col-md-12 mt-3">
-                        <button class="btn btn-theme bg-2" type="submit">Save Changes</button>
+                        <button class="btn btn-theme bg-2" type="submit">Сохранить</button>
                     </div>
                 </form>
             </div>
