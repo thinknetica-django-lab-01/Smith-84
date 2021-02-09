@@ -241,7 +241,7 @@ class SaveImages(PermissionRequiredMixin, UpdateView):
     form_class = inlineformset_factory(Ad, Image, fields=('image',), extra=3, min_num=1)
     template_name = 'form_files.html'
     redirect_field_name = 'accounts/login/'
-    permission_required = 'main.add_ad'
+    permission_required = 'main.change_ad'
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
