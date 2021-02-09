@@ -50,18 +50,11 @@
                                 <i class="ti-user mr-1"></i><span class="dn-lg">Вход</span>
                             </a>
                         {% endif %}
-
-
-                    </li>
-                        {% if user.is_authenticated %}
-                        {% else %}
-                            <li class="add-listing theme-bg">
-                                <a href="{% url 'choice_type' %}">
-                                    <i class="ti-plus"></i>Добавить объявление
-                                </a>
-                            </li>
-                        {% endif %}
-
+                        <li class="add-listing theme-bg">
+                            <a href="{% url 'choice_type' %}">
+                                <i class="ti-plus"></i>Добавить объявление
+                            </a>
+                        </li>
                 </ul>
             </div>
         </nav>

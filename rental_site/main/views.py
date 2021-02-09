@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.forms import generic_inlineformset_factory
 from django.forms.models import inlineformset_factory
 from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib import messages
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -167,7 +167,7 @@ class RealtyList(LoginRequiredMixin, View):
         return render(request, 'choice_type.html')
 
 
-class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
+class AddRealtyAdMixin(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """
         Базовая вью добавления объявлений
     """
@@ -176,6 +176,7 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
     second_form_class = generic_inlineformset_factory(Ad, form=AdForm, extra=1, can_delete=False)
     template_name = 'form.html'
     redirect_field_name = 'accounts/login/'
+    permission_required = 'main.can_add'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -240,6 +241,7 @@ class SaveImages(LoginRequiredMixin, UpdateView):
     form_class = inlineformset_factory(Ad, Image, fields=('image',), extra=3, min_num=1)
     template_name = 'form_files.html'
     redirect_field_name = 'accounts/login/'
+    permission_required = 'main.can_add'
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -252,7 +254,7 @@ class SaveImages(LoginRequiredMixin, UpdateView):
             return self.render_to_response(self.get_context_data())
 
 
-class EditRealtyAd(LoginRequiredMixin, UpdateView):
+class EditRealtyAd(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """
         Редактирование страницы объявления
         Какую форму с доп данными подгружаем и определяем из content_type
@@ -268,6 +270,7 @@ class EditRealtyAd(LoginRequiredMixin, UpdateView):
         'LandPlot': LandPlotForm
     }
     redirect_field_name = 'accounts/login/'
+    permission_required = 'main.can_edit'
 
     def get_second_form_class(self):
         """
