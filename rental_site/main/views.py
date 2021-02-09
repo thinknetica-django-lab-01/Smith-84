@@ -167,7 +167,7 @@ class RealtyList(LoginRequiredMixin, View):
         return render(request, 'choice_type.html')
 
 
-class AddRealtyAdMixin(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class AddRealtyAdMixin(PermissionRequiredMixin, CreateView):
     """
         Базовая вью добавления объявлений
     """
@@ -176,7 +176,7 @@ class AddRealtyAdMixin(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     second_form_class = generic_inlineformset_factory(Ad, form=AdForm, extra=1, can_delete=False)
     template_name = 'form.html'
     redirect_field_name = 'accounts/login/'
-    permission_required = 'main.can_add'
+    permission_required = 'main.add_ad'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -233,7 +233,7 @@ class AddGarage(AddRealtyAdMixin):
     form_class = GarageForm
 
 
-class SaveImages(LoginRequiredMixin, UpdateView):
+class SaveImages(PermissionRequiredMixin, UpdateView):
     """
         Добавление картинок к объявлению
     """
@@ -241,7 +241,7 @@ class SaveImages(LoginRequiredMixin, UpdateView):
     form_class = inlineformset_factory(Ad, Image, fields=('image',), extra=3, min_num=1)
     template_name = 'form_files.html'
     redirect_field_name = 'accounts/login/'
-    permission_required = 'main.can_add'
+    permission_required = 'main.add_ad'
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -254,7 +254,7 @@ class SaveImages(LoginRequiredMixin, UpdateView):
             return self.render_to_response(self.get_context_data())
 
 
-class EditRealtyAd(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class EditRealtyAd(PermissionRequiredMixin, UpdateView):
     """
         Редактирование страницы объявления
         Какую форму с доп данными подгружаем и определяем из content_type
@@ -270,7 +270,7 @@ class EditRealtyAd(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         'LandPlot': LandPlotForm
     }
     redirect_field_name = 'accounts/login/'
-    permission_required = 'main.can_edit'
+    permission_required = 'main.change_ad'
 
     def get_second_form_class(self):
         """
