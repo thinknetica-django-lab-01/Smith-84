@@ -13,6 +13,13 @@
     <div class="col-lg">
         <div class="log_box">
                 <div class="col-lg-6 col-md-6">
+                    {% if messages %}
+                      {% for message in messages %}
+                          <div class="alert alert-{{ message.tags }}" role="alert">
+                              {{ message }}
+                          </div>
+                      {% endfor %}
+                    {% endif %}
                     <h4 class="modal-header-title text-left">Sign In</h4>
                     {% if socialaccount_providers %}
                         <div class="social-login light single mb-3">
