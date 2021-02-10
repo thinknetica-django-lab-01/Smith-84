@@ -144,7 +144,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# Provider specific settings
+#Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
