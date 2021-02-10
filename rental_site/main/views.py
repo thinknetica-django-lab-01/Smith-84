@@ -7,12 +7,11 @@ from django.forms.models import inlineformset_factory
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib import messages
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from django.contrib.auth.models import User, Group
 
 from .models import *
 from .forms import *
+
+
 # Create your views here.
 
 
@@ -36,7 +35,8 @@ class AdsListMixin(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tags'] = Tag.objects.filter(ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
+        context['tags'] = Tag.objects.filter(
+            ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
         return context
 
     def get_queryset(self):
@@ -119,6 +119,7 @@ class Dashboard(LoginRequiredMixin, View):
     """
         Личный кабинет пользователя
     """
+
     def get(self, request):
         return render(request, 'dashboard.html')
 
@@ -302,16 +303,3 @@ class EditRealtyAd(PermissionRequiredMixin, UpdateView):
             messages.error(request, f'Ошибка! {ad_form.errors.as_text()}')
 
         return self.render_to_response(self.get_context_data())
-
-
-@receiver(post_save, sender=User)
-def create_profile(sender, instance, created, **kwargs):
-    if created:
-        user_profile = Profile.objects.create(user=instance)
-        user_profile.save()
-
-
-@receiver(post_save, sender=User)
-def add_user_to_group(sender, instance, created, **kwargs):
-    common_users, _ = Group.objects.get_or_create(name="common_users")
-    instance.groups.add(common_users)
