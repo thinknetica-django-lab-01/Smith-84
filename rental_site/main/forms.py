@@ -1,4 +1,5 @@
 from django import forms
+from crispy_forms.helper import FormHelper
 from .models import *
 from django.core.exceptions import ValidationError
 
@@ -13,7 +14,6 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('age', 'phone_number',)
-
 
     def clean_age(self):
         current_age = self.cleaned_data['age']
@@ -51,3 +51,12 @@ class GarageForm(forms.ModelForm):
     class Meta:
         model = Garage
         fields = '__all__'
+
+
+class SubscribersForm(forms.ModelForm):
+    class Meta:
+        model = Subscribers
+        fields = '__all__'
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(self, *args, **kwargs)

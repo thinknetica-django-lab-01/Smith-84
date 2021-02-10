@@ -19,7 +19,13 @@ class Index(View):
     template_name = 'index.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        sub_form = SubscribersForm
+        return render(request, self.template_name, context={'sub_form': sub_form})
+
+    def post(self, request):
+        fill_form = SubscribersForm(request.POST)
+        if fill_form.is_valid():
+            fill_form.save()
 
 
 class AdsListMixin(ListView):

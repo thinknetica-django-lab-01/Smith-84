@@ -28,3 +28,8 @@ def send_mail_new_user(sender, instance, created, **kwargs):
             [instance.email],
             fail_silently=False,
         )
+
+
+@receiver(post_save, sender=Ad)
+def send_subscribers_new_ad(sender, instance, created, **kwargs):
+    pass

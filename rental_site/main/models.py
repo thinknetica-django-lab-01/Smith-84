@@ -143,3 +143,12 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
+
+
+class Subscribers(models.Model):
+
+    email = models.EmailField()
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (('email', 'region'),)
