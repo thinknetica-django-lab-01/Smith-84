@@ -5,7 +5,11 @@
     <title>Подтверждение e-mail адреса</title>
 </head>
 <body>
-<h1>Новое объявление!</h1>
-<h2>{{realty_type}}, {{region}}</h2>
-<a href="{{url}}">Ссылка на объяевление</a>
+<h1>Новые объявление!</h1>
+    <ul>
+        {% for ad in ads %}
+            <li><a href="{{ ad.get_full_absolute_url }}">{{ ad.content_type.name }}, {{  ad.region.name }}</a></li>
+        {% endfor %}
+    </ul>
 </body>
+</html>
