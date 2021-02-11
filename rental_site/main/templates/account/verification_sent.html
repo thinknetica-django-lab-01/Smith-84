@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+{% block content %}
+{% include 'components/header.html' %}
+<section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Single Package -->
+            <div class="col-6">
+            {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}" role="alert">
+                      {{ message }}
+                  </div>
+              {% endfor %}
+            {% endif %}
+            <h4>{% trans "Подтвердите свой E-mail адресс" %}</h4>
+            <p>{% blocktrans %}Мы отправили вам электронное письмо для проверки.
+                Перейдите по предоставленной ссылке, чтобы завершить процесс регистрации.
+                Пожалуйста, свяжитесь с нами, если вы не получите его в течение нескольких минут.
+                {% endblocktrans %}
+            </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+{% include 'components/footer.html'  %}
+{% endblock %}

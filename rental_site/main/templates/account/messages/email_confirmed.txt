@@ -1,0 +1,3 @@
+{% load i18n %}
+{% blocktrans %}Ваш {{email}} подтвержден.{% endblocktrans %}
+{% blocktrans %}Введите логин и пароль{% endblocktrans %}
