@@ -26,6 +26,11 @@ class Index(View):
         fill_form = SubscribersForm(request.POST)
         if fill_form.is_valid():
             fill_form.save()
+            messages.success(request, 'Вы подписались на рассылку!')
+        else:
+            messages.error(request, f'Ошибка! {fill_form.errors.as_text()} ')
+
+        return render(request, self.template_name)
 
 
 class AdsListMixin(ListView):

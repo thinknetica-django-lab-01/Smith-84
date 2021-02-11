@@ -146,9 +146,4 @@ class Tag(models.Model):
 
 
 class Subscribers(models.Model):
-
-    email = models.EmailField()
-    region = models.ForeignKey(Region, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = (('email', 'region'),)
+    email = models.EmailField(unique=True)

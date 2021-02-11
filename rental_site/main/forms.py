@@ -1,5 +1,4 @@
 from django import forms
-from crispy_forms.helper import FormHelper
 from .models import *
 from django.core.exceptions import ValidationError
 
@@ -57,6 +56,3 @@ class SubscribersForm(forms.ModelForm):
     class Meta:
         model = Subscribers
         fields = '__all__'
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(self, *args, **kwargs)
