@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from pytils.translit import slugify
-
+from django.contrib.sites.models import Site
 
 # Create your models here.
 
@@ -65,6 +65,10 @@ class Ad(models.Model):
 
     def get_absolute_url(self):
         return reverse('ad_detail', kwargs={'slug': self.slug})
+
+    def get_full_absolute_url(self):
+        domain = Site.objects.get_current().domain
+        return 'http://%s%s' % (domain, self.get_absolute_url())
 
     def __str__(self):
         return self.description[:40]

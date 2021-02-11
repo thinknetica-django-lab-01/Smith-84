@@ -17,20 +17,20 @@ from .forms import *
 
 class Index(View):
     template_name = 'index.html'
+    sub_form = SubscribersForm
 
     def get(self, request):
-        sub_form = SubscribersForm
-        return render(request, self.template_name, context={'sub_form': sub_form})
+        return render(request, self.template_name, context={'sub_form': self.sub_form})
 
     def post(self, request):
-        fill_form = SubscribersForm(request.POST)
+        fill_form = self.sub_form(request.POST)
         if fill_form.is_valid():
             fill_form.save()
             messages.success(request, 'Вы подписались на рассылку!')
         else:
             messages.error(request, f'Ошибка! {fill_form.errors.as_text()} ')
 
-        return render(request, self.template_name)
+        return render(request, self.template_name, context={'sub_form': self.sub_form})
 
 
 class AdsListMixin(ListView):
@@ -257,12 +257,12 @@ class SaveImages(PermissionRequiredMixin, UpdateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        image_form = self.form_class(request.POST, request.FILES, instance=self.object)
-        if image_form.is_valid():
-            image_form.save()
+        image_formset = self.form_class(request.POST, request.FILES, instance=self.object)
+        if image_formset.is_valid():
+            image_formset.save()
             return redirect(reverse('ad_detail', kwargs={'slug': self.object.slug}))
         else:
-            messages.error(request, f'Ошибка! {image_form.errors.as_text()}')
+            messages.error(request, f'Ошибка! Загрузите изображение!')
             return self.render_to_response(self.get_context_data())
 
 
