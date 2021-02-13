@@ -29,23 +29,3 @@ def send_mail_new_user(sender, instance, created, **kwargs):
             [instance.email],
             fail_silently=False,
         )
-
-
-@receiver(post_save, sender=Ad)
-def send_subscribers_new_ad(sender, instance, created, **kwargs):
-    if created:
-        subscribers = Subscribers.objects.all().values_list('email', flat=True)
-        context = {
-            'url': instance.get_full_absolute_url(),
-            'realty_type': instance.content_type.name,
-            'region': instance.region.name
-        }
-        message_body = render_to_string(template_name='subscribe/subscribe_email.html', context=context)
-        with get_connection() as connection:
-            for subscriber in subscribers:
-                email = EmailMessage(subject='Новое объявление',
-                                     from_email='admin@example.com',
-                                     body=message_body, to=[subscriber],
-                                     connection=connection)
-                email.content_subtype = "html"
-                email.send()
