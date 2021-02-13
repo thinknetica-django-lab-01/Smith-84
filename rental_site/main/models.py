@@ -69,7 +69,7 @@ class Ad(models.Model):
 
     def get_full_absolute_url(self):
         domain = Site.objects.get_current().domain
-        return 'http://%s%s' % (domain, self.get_absolute_url())
+        return f'http://{domain}{self.get_absolute_url()}'
 
     def __str__(self):
         return self.description[:40]
