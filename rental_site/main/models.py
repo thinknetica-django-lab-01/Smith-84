@@ -92,10 +92,15 @@ class Realty(models.Model):
 
 
 class Apartment(Realty):
+    BUILDING_CHOICES = ([
+        ('new', 'Новостройка'),
+        ('second', 'Вторичка')
+    ])
     floor = models.PositiveSmallIntegerField()
     number_of_rooms = models.PositiveSmallIntegerField()
     kitchen_square = models.FloatField()
     living_square = models.FloatField()
+    building = models.CharField(max_length=20, choices=BUILDING_CHOICES)
 
     class Meta:
         verbose_name = 'Квартира'

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load custom_tags %}
 {% block content %}
-
+{% load crispy_forms_tags %}
 {% include 'components/header.html' %}
 <div class="image-cover hero_banner"
      style="background:#334aca url('https://cs8.pikabu.ru/post_img/big/2017/08/11/4/1502425645172160116.jpg') no-repeat;"
@@ -13,103 +13,36 @@
         <!-- Type -->
         <div class="full_search_box nexio_search lightanic_search hero_search-radius modern">
             <div class="search_hero_wrapping">
-                <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-12">
-                        <div class="form-group">
-                            <label>Недвижимость</label>
-                            <div class="input-with-icon">
-                                <select id="ptypes" class="form-control">
-                                    <option value="">&nbsp;</option>
-                                    <option value="1">All categories</option>
-                                    <option value="2">Apartment</option>
-                                    <option value="3">Villas</option>
-                                    <option value="4">Commercial</option>
-                                    <option value="5">Offices</option>
-                                    <option value="6">Garage</option>
-                                </select>
+                    <form class="row">
+                        {% csrf_token %}
+                        {% for field in search_form %}
+                            <div class="col-lg-{% cycle 2 2 3 3 %} col-md-2 col-sm-12">
+                                <div class="form-group">
+                                    <label>{{ field.label }}</label>
+                                    <div class="input-with-icon">
+                                        {{ field }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="col-lg-2 col-md-2 col-sm-12 small-padd">
+                            <div class="form-group none">
+                                <a href="#" class="btn search-btn">Search</a>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-2 col-sm-12">
-                        <div class="form-group">
-                            <label>Продажа</label>
-                            <div class="input-with-icon">
-                                <select id="lookingfor" class="form-control">
-                                    <option value="">&nbsp;</option>
-                                    <option value="1">Sale</option>
-                                    <option value="2">Rent</option>
-                                    <option value="3">Buy</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-3 col-md-3 col-sm-12">
-                        <div class="form-group">
-                            <label>Цена</label>
-                            <div class="input-with-icon">
-                                <select id="price" class="form-control">
-                                    <option value="">&nbsp;</option>
-                                    <option value="1">From 40,000 To 10m</option>
-                                    <option value="2">From 60,000 To 20m</option>
-                                    <option value="3">From 70,000 To 30m</option>
-                                    <option value="3">From 80,000 To 40m</option>
-                                    <option value="3">From 90,000 To 50m</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-3 col-sm-12">
-                        <div class="form-group none">
-                            <label>Населенный пункт</label>
-                            <div class="input-with-icon">
-                                <select id="location" class="form-control">
-                                    <option value="">&nbsp;</option>
-                                    <option value="1">New York City</option>
-                                    <option value="2">Honolulu, Hawaii</option>
-                                    <option value="3">California</option>
-                                    <option value="4">New Orleans</option>
-                                    <option value="5">Washington</option>
-                                    <option value="6">Charleston</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-2 col-sm-12 small-padd">
-                        <div class="form-group none">
-                            <a href="#" class="btn search-btn">Search</a>
-                        </div>
-                    </div>
-
-                </div>
-
+                    </form>
             </div>
         </div>
     </div>
 </div>
 <!-- ============================ Hero Banner End ================================== -->
-<section>
-    <div class="container">
 
-        <div class="row justify-content-center">
-            <div class="col-lg-7 col-md-8">
-                <div class="sec-heading center">
-                    <h2>Квартиры</h2>
-                    <p>Лучшие предложения</p>
-                </div>
-            </div>
-        </div>
+{% for ads in best_deal_ads %}
+    {% for ad in ads %}
+    {% endfor %}
+{% endfor %}
 
-        <div class="row">
-            <!-- Single Property -->
-        </div>
 
-    </div>
-</section>
-{% include 'subscribe/subscribe.html' %}
+{% include 'components/subscribe/subscribe.html' %}
 {% include 'components/footer.html' %}
 {% endblock %}

@@ -5,4 +5,4 @@ def get_message_body(ads):
     """
         Генерирует и возращает шаблон email сообщения
     """
-    return render_to_string(template_name='subscribe/subscribe_email.html', context={'ads': ads})
+    return render_to_string(template_name='components/subscribe/subscribe_email.html', context={'ads': ads})
