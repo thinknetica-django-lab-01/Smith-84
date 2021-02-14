@@ -146,6 +146,9 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'form.html'
     redirect_field_name = 'accounts/login/'
 
+    def get_object(self, *args, **kwargs):
+        return self.request.user
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profile_form = self.second_form_class(instance=self.request.user.profile)
