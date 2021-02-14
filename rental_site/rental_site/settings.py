@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from decouple import config
 from django.contrib.messages import constants as messages
+from celery.schedules import crontab
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -178,4 +180,9 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Krasnoyarsk'
-
+CELERY_BEAT_SCHEDULE = {
+    "week_mailing": {
+        "task": "week_mailing",
+        "schedule":  crontab(hour=0, minute=30, day_of_week=1)
+    }
+}

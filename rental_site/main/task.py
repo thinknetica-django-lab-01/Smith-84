@@ -7,7 +7,8 @@ from rental_site.celery import app
 from .utils import get_message_body
 
 
-def send_subscribers_new_ad():
+@app.task(name='week_mailing')
+def week_mailing():
     """
         Рассылка новых объявлений за неделю
     """
@@ -24,18 +25,6 @@ def send_subscribers_new_ad():
                                  connection=connection)
             email.content_subtype = "html"
             email.send()
-
-
-def start():
-    """
-        Планировщик рассылки сообщений за неделю
-    """
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(func=send_subscribers_new_ad, trigger='cron', day_of_week='mon', hour='0')
-    try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        pass
 
 
 @app.task
