@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('dashboard/', Dashboard.as_view(), name='dashboard'),
     path('dashboard/add/', RealtyList.as_view(), name='choice_type'),
-    path('accounts/profile/<int:pk>/', UserUpdate.as_view(), name='edit_user_profile'),
+    path('accounts/profile/', UserUpdate.as_view(), name='edit_user_profile'),
 
     path('ad/add/apartment/', AddApartment.as_view(), name='add_apartment'),
     path('ad/add/room/', AddRoom.as_view(), name='add_room'),
