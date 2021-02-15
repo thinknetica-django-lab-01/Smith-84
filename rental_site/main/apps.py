@@ -6,5 +6,3 @@ class MainConfig(AppConfig):
 
     def ready(self):
         from . import signals
-        from . import task
-        task.start()

@@ -1,6 +1,7 @@
 from django import forms
 from .models import *
 from django.core.exceptions import ValidationError
+from crispy_forms.helper import FormHelper
 
 
 class UserForm(forms.ModelForm):
@@ -56,3 +57,36 @@ class SubscribersForm(forms.ModelForm):
     class Meta:
         model = Subscribers
         fields = '__all__'
+
+
+class SearchApartmentForm(forms.Form):
+    ROOM_CHOICES = ([
+        ('', '-'),
+        ('1', '1-комнатные'),
+        ('2', '2-комнатные'),
+        ('3', '3-комнатные'),
+        ('4', '4-комнатные и более')
+    ])
+    BUILDING_CHOICES = ([
+        ('', '-'),
+        ('new', 'Новостройка'),
+        ('second', 'Вторичка')
+    ])
+    PRICE_RANGE = ([
+        ('', '-'),
+        ('1000000', 'до 1млн рублей'),
+        ('2000000', 'от 1 до 2млн рублей'),
+        ('3000000', 'От 2 до 3млн рублей'),
+        ('5000000', 'От 3 до 5 млн рублей'),
+        ('max', 'Более 5 млн рублей')
+    ])
+
+    room_count = forms.ChoiceField(required=True, choices=ROOM_CHOICES, label='Количество комнат')
+    action = forms.ChoiceField(required=True, choices=BUILDING_CHOICES, label='Тип жилья')
+    price = forms.ChoiceField(required=True, choices=PRICE_RANGE,label='Стоимость')
+    region = forms.ModelChoiceField(required=True, queryset=Region.objects.all(), label='Населенный пункт')
+
+    room_count.widget.attrs.update({'class': 'form-control', 'id': 'ptypes'})
+    action.widget.attrs.update({'class': 'form-control', 'id': 'lookingfor'})
+    price.widget.attrs.update({'class': 'form-control', 'id': 'price'})
+    region.widget.attrs.update({'class': 'form-control', 'id': 'location'})

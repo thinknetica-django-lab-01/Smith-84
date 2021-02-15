@@ -18,9 +18,10 @@ from .forms import *
 class Index(View):
     template_name = 'index.html'
     sub_form = SubscribersForm
+    search_form = SearchApartmentForm
 
     def get(self, request):
-        return render(request, self.template_name, context={'sub_form': self.sub_form})
+        return render(request, self.template_name, context={'sub_form': self.sub_form, 'search_form': self.search_form})
 
     def post(self, request):
         fill_form = self.sub_form(request.POST)
@@ -144,6 +145,9 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     second_form_class = ProfileForm
     template_name = 'form.html'
     redirect_field_name = 'accounts/login/'
+
+    def get_object(self, *args, **kwargs):
+        return self.request.user
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
