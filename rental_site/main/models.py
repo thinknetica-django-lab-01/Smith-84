@@ -44,6 +44,7 @@ class Ad(models.Model):
     address = models.CharField(max_length=200)
     slug = models.SlugField(blank=True)
     date_added = models.DateField(auto_now_add=True)
+    view_count = models.PositiveIntegerField(default=0)
     ACTION_CHOICES = [
         ('sell', 'Продажа'),
         ('rent', 'Аренда'),
