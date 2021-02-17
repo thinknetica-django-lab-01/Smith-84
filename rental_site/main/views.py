@@ -7,6 +7,7 @@ from django.forms.models import inlineformset_factory
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib import messages
+from django.views.decorators.cache import cache_page
 
 from .models import *
 from .forms import *
@@ -47,8 +48,7 @@ class AdsListMixin(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tags'] = Tag.objects.filter(
-            ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
+        context['tags'] = Tag.objects.filter(ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
         return context
 
     def get_queryset(self):
@@ -119,6 +119,7 @@ class LandPlotSell(AdsListMixin):
     action = 'sell'
 
 
+@cache_page(60 * 15)
 class AdDetail(DetailView):
     """
         Страница объявления
