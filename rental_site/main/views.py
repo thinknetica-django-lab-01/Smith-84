@@ -8,10 +8,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib import messages
 from django.views.decorators.cache import cache_page
-
+from django.utils.decorators import method_decorator
 from .models import *
 from .forms import *
-
+from django.core.cache import cache
 
 # Create your views here.
 
@@ -119,13 +119,25 @@ class LandPlotSell(AdsListMixin):
     action = 'sell'
 
 
-@cache_page(60 * 15)
+# @method_decorator(cache_page(60 * 5), name='dispatch')
 class AdDetail(DetailView):
     """
         Страница объявления
     """
     model = Ad
     template_name = 'item_ad.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.object.view_count += 1
+        self.object.save()
+        key = f'{self.object.pk}_counter'
+        counter = cache.get(key)
+        if counter is None:
+            counter = self.object.view_count
+            cache.set(key, counter, 60)
+        context['counter'] = counter
+        return context
 
 
 class Dashboard(LoginRequiredMixin, View):
