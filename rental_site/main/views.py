@@ -127,17 +127,17 @@ class AdDetail(DetailView):
     model = Ad
     template_name = 'item_ad.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        self.object.view_count += 1
-        self.object.save()
-        key = f'{self.object.pk}_counter'
-        counter = cache.get(key)
-        if counter is None:
-            counter = self.object.view_count
-            cache.set(key, counter, 60)
-        context['counter'] = counter
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     self.object.view_count += 1
+    #     self.object.save()
+    #     key = f'{self.object.pk}_counter'
+    #     counter = cache.get(key)
+    #     if counter is None:
+    #         counter = self.object.view_count
+    #         cache.set(key, counter, 60)
+    #     context['counter'] = counter
+    #     return context
 
 
 class Dashboard(LoginRequiredMixin, View):
