@@ -1,17 +1,12 @@
-from django.test import TestCase
-from ..models import *
-from faker import Faker
-from faker import Factory
-from django.contrib.auth.models import User
+from django.test import TestCase, RequestFactory
+from ..views import *
 from ..factories import RegionFactory, GarageFactory, AdFactory, UserFactory
 from django.urls import reverse
-
-fake = Factory.create()
 
 
 class IndexViewTest(TestCase):
 
-    def test_success_index_view(self):
+    def test_success(self):
         self.response = self.client.get('/')
         self.assertEqual(self.response.status_code, 200)
 
@@ -54,58 +49,75 @@ class AdDetailViewTest(TestCase):
         self.ad_data = GarageFactory()
         self.ad = AdFactory(region=self.region, user=self.user, content_object=self.ad_data)
 
-    def test_success_ad_view(self):
+    def test_success(self):
         self.response = self.client.get(reverse('ad_detail', kwargs={'slug': self.ad.slug}))
         self.assertEqual(self.response.status_code, 200)
 
 
+class DashboardViewTest(TestCase):
+    def setUp(self):
+        self.user = UserFactory()
+        self.factory = RequestFactory()
 
-# path('accounts/', include('allauth.urls')),
-# path('dashboard/', Dashboard.as_view(), name='dashboard'),
-# path('dashboard/add/', RealtyList.as_view(), name='choice_type'),
-# path('accounts/profile/', UserUpdate.as_view(), name='edit_user_profile'),
-
-
-
-
-
-
-
+    def test_success(self):
+        request = self.factory.get('/dashboard/')
+        request.user = self.user
+        response = Dashboard.as_view()(request)
+        self.assertEqual(response.status_code, 200)
 
 
+class RealtyListViewTest(TestCase):
+    def setUp(self):
+        self.user = UserFactory()
+        self.factory = RequestFactory()
 
-        # number_of_ads = 15
-        # building_choices = ['new', 'second']
-        # region = RegionFactory()
-        # # test_user = User.objects.create_user(username=fake.username(), password=fake.password())
+    def test_success(self):
+        request = self.factory.get('/dashboard/add/')
+        request.user = self.user
+        response = RealtyList.as_view()(request)
+        self.assertEqual(response.status_code, 200)
 
-        # for ad in range(15):
-        #     apartment_data = Apartment.objects.create(
-        #         total_square=69.3,
-        #         floor=5,
-        #         number_of_rooms=3,
-        #         kitchen_square=7.2,
-        #         living_square=56,
-        #         building=building_choices[0]
-        #     )
-        #     room_data = Room.objects.create(
-        #         total_square=20,
-        #         floor=3
-        #     )
-        #     garage_data = Garage.objects.create(
-        #         total_square=20,
-        #         number_of_floors=3
-        #     )
-        #     land_plot_data = LandPlot.objects.create(
-        #         total_square=20
-        #     )
-        #     ad = Ad.objects.create(
-        #         region=region,
-        #         user=test_user,
-        #         content_object=apartment_data,
-        #         cost=fake.cost(),
-        #         description=fake.text(),
-        #         address=fake.address(),
-        #         action='Продажа'
-        #     )
-        #     print(ad.cost)
+
+class AddRealtyAdViewTest(TestCase):
+    def setUp(self):
+        self.user = UserFactory()
+        self.factory = RequestFactory()
+
+    def test_success_add_apartment_view(self):
+        request = self.factory.get('/ad/add/apartment/')
+        request.user = self.user
+        response = AddApartment.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_success_add_room_view(self):
+        request = self.factory.get('/ad/add/room/')
+        request.user = self.user
+        response = AddRoom.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_success_add_garage_view(self):
+        request = self.factory.get('/ad/add/garage/')
+        request.user = self.user
+        response = AddGarage.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_success_add_land_plot_view(self):
+        request = self.factory.get('/ad/add/land-plot/')
+        request.user = self.user
+        response = AddLandPlot.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+
+class EditRealtyAdViewTest(TestCase):
+    def setUp(self):
+        self.user = UserFactory()
+        self.factory = RequestFactory()
+        self.region = RegionFactory()
+        self.ad_data = GarageFactory()
+        self.ad = AdFactory(region=self.region, user=self.user, content_object=self.ad_data)
+
+    def test_success(self):
+        request = self.factory.get('/ad/add/land-plot/')
+        request.user = self.user
+        response = EditRealtyAd.as_view()(request, pk=self.ad.uniq_id)
+        self.assertEqual(response.status_code, 200)

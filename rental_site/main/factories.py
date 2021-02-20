@@ -1,9 +1,10 @@
 import factory
-from .models import *
+
 from factory.django import DjangoModelFactory
 from faker import Factory
+
+from .models import *
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 
 faker = Factory.create('ru_RU')
 User = get_user_model()
@@ -41,6 +42,6 @@ class AdFactory(DjangoModelFactory):
     cost = faker.random_int()
     description = faker.text()
     address = faker.street_address()
-    action = 'Продажа'
-    date_added = faker.random_int()
+    action = faker.random_choices(elements=['sell', 'rent'])
+    date_added = faker.date()
     view_count = faker.random_int()
