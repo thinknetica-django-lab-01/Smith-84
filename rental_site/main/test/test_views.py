@@ -1,7 +1,10 @@
+from django.test import TestCase
 from django.test import TestCase, RequestFactory
 from ..views import *
 from ..factories import RegionFactory, GarageFactory, AdFactory, UserFactory
 from django.urls import reverse
+
+from main.factories import RegionFactory, GarageFactory, AdFactory, UserFactory
 
 
 class IndexViewTest(TestCase):

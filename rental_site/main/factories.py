@@ -1,9 +1,8 @@
 import factory
-
 from factory.django import DjangoModelFactory
 from faker import Factory
 
-from .models import *
+from .models import Garage, Ad, Region
 from django.contrib.auth import get_user_model
 
 faker = Factory.create('ru_RU')

@@ -3,7 +3,8 @@ from django.contrib.flatpages.admin import FlatPageAdmin as FlatpageFormOld
 from django.contrib.flatpages.models import FlatPage
 
 from ckeditor.widgets import CKEditorWidget
-from .models import *
+from .models import Ad, Region, Apartment, Room, Garage, LandPlot, Profile, Image, Tag
+from django.db import models
 
 # Register your models here.
 
