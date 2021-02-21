@@ -1,9 +1,6 @@
-from django.test import TestCase
 from django.test import TestCase, RequestFactory
-from ..views import *
-from ..factories import RegionFactory, GarageFactory, AdFactory, UserFactory
 from django.urls import reverse
-
+from main.views import Dashboard, RealtyList, AddApartment, AddRoom, AddGarage, AddLandPlot, EditRealtyAd
 from main.factories import RegionFactory, GarageFactory, AdFactory, UserFactory
 
 

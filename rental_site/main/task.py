@@ -1,7 +1,6 @@
 import datetime
 
-from apscheduler.schedulers.background import BackgroundScheduler
-from .models import *
+from .models import Subscribers, Ad
 from django.core.mail import send_mail, EmailMessage, get_connection
 from rental_site.celery import app
 from .utils import get_message_body
