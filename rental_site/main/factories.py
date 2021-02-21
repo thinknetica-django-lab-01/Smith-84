@@ -1,9 +1,9 @@
 import factory
-from .models import *
 from factory.django import DjangoModelFactory
 from faker import Factory
+
+from .models import Garage, Ad, Region
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 
 faker = Factory.create('ru_RU')
 User = get_user_model()
