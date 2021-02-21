@@ -11,8 +11,10 @@ from django.contrib import messages
 # from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from .models import Ad, Apartment, Room, Garage, LandPlot, Image, Tag
-from .forms import SubscribersForm, SearchApartmentForm, UserForm, ProfileForm, ApartmentForm, GarageForm, LandPlotForm, AdForm, RoomForm
+from .forms import AdForm, RoomForm, ApartmentForm, GarageForm, LandPlotForm
+from .forms import SubscribersForm, SearchApartmentForm, UserForm, ProfileForm
 from django.core.cache import cache
+
 
 # Create your views here.
 
@@ -49,7 +51,8 @@ class AdsListMixin(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tags'] = Tag.objects.filter(ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
+        context['tags'] = Tag.objects.filter(
+            ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
         return context
 
     def get_queryset(self):
