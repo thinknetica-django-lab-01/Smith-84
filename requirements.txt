@@ -1,11 +1,13 @@
 alabaster==0.7.12
 amqp==5.0.5
+appdirs==1.4.4
 APScheduler==3.7.0
 asgiref==3.3.1
 atomicwrites==1.4.0
 attrs==20.3.0
 Babel==2.9.0
 billiard==3.6.3.0
+bluepy==1.3.0
 celery==5.0.5
 certifi==2020.12.5
 cffi==1.14.4
@@ -15,8 +17,10 @@ click-didyoumean==0.0.3
 click-plugins==1.1.1
 click-repl==0.1.6
 colorama==0.4.4
+conda==4.3.16
 cryptography==3.3.1
 defusedxml==0.6.0
+distlib==0.3.1
 Django==3.0
 django-allauth==0.44.0
 django-celery-beat==2.2.0
@@ -29,6 +33,7 @@ django-timezone-field==4.1.1
 docutils==0.16
 factory-boy==3.2.0
 Faker==6.4.1
+filelock==3.0.12
 flake8==3.8.4
 idna==2.10
 imagesize==1.2.0
@@ -41,10 +46,12 @@ mccabe==0.6.1
 oauthlib==3.1.0
 packaging==20.9
 Pillow==8.1.0
+pipenv==2020.8.13
 pluggy==0.13.1
 prompt-toolkit==3.0.16
 py==1.10.0
 pycodestyle==2.6.0
+pycosat==0.6.3
 pycparser==2.20
 pyflakes==2.2.0
 Pygments==2.8.0
@@ -61,6 +68,8 @@ pytz==2020.5
 redis==3.5.3
 requests==2.25.1
 requests-oauthlib==1.3.0
+ruamel.yaml==0.16.12
+ruamel.yaml.clib==0.2.2
 six==1.15.0
 snowballstemmer==2.1.0
 Sphinx==3.5.1
@@ -78,5 +87,7 @@ typing-extensions==3.7.4.3
 tzlocal==2.1
 urllib3==1.26.3
 vine==5.0.0
+virtualenv==20.0.31
+virtualenv-clone==0.5.4
 wcwidth==0.2.5
 zipp==3.4.0
