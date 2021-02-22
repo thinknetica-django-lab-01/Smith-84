@@ -143,3 +143,4 @@ cython_debug/
 #Static
 */static/
 */media/
+/docs/_build/html/_static/
