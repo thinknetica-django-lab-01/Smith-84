@@ -9,11 +9,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib import messages
 # from django.views.decorators.cache import cache_page
 # from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from .models import Ad, Apartment, Room, Garage, LandPlot, Image, Tag
 from .forms import AdForm, RoomForm, ApartmentForm, GarageForm, LandPlotForm
 from .forms import SubscribersForm, SearchApartmentForm, UserForm, ProfileForm
 from django.core.cache import cache
+from django.db.models.query import QuerySet
+from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
+from typing import Dict, Any, Union, Type
 
 
 # Create your views here.
@@ -27,10 +30,10 @@ class Index(View):
     sub_form = SubscribersForm
     search_form = SearchApartmentForm
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, self.template_name, context={'sub_form': self.sub_form, 'search_form': self.search_form})
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> HttpResponse:
         fill_form = self.sub_form(request.POST)
         if fill_form.is_valid():
             fill_form.save()
@@ -52,13 +55,13 @@ class AdsListMixin(ListView):
     action = None
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['tags'] = Tag.objects.filter(
             ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
         return context
 
-    def get_queryset(self):
+    def get_queryset(self) -> 'QuerySet[Ad]':
         data_to_query = {
             'action': self.action,
             'content_type': ContentType.objects.get_for_model(self.realty)
@@ -134,7 +137,7 @@ class AdDetail(DetailView):
     model = Ad
     template_name = 'item_ad.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         self.object.view_count += 1
         self.object.save()
@@ -151,8 +154,7 @@ class Dashboard(LoginRequiredMixin, View):
     """
         Класс-представление страницы кабинета пользователя
     """
-
-    def get(self, request):
+    def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, 'dashboard.html')
 
 
@@ -166,17 +168,17 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'form.html'
     redirect_field_name = 'accounts/login/'
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, *args, **kwargs) -> Union[User, AnonymousUser]:
         return self.request.user
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         profile_form = self.second_form_class(instance=self.request.user.profile)
         context['additional_form'] = profile_form
         context['title'] = 'Данные профиля'
         return context
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         self.object = self.get_object()
         user_form = self.form_class(request.POST, instance=self.request.user)
         profile_form = self.second_form_class(request.POST, instance=self.request.user.profile)
@@ -200,7 +202,7 @@ class RealtyList(LoginRequiredMixin, View):
     login_url = '/accounts/signup/'
     redirect_field_name = 'redirect_to'
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, 'choice_type.html')
 
 
@@ -215,12 +217,12 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
     redirect_field_name = 'accounts/login/'
     permission_required = 'main.add_ad'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['additional_form'] = self.second_form_class
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> Union[HttpResponse, HttpResponseRedirect]:
         if form.is_valid():
             obj = form.save(commit=False)
             ad_form = self.second_form_class(data=self.request.POST, instance=obj)
@@ -280,7 +282,7 @@ class SaveImages(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'accounts/login/'
     permission_required = 'main.change_ad'
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs) -> Union[HttpResponse, HttpResponseRedirect]:
         self.object = self.get_object()
         image_formset = self.form_class(request.POST, request.FILES, instance=self.object)
         if image_formset.is_valid():
@@ -308,13 +310,13 @@ class EditRealtyAd(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'accounts/login/'
     permission_required = 'main.change_ad'
 
-    def get_second_form_class(self):
+    def get_second_form_class(self) -> Type[Union[ApartmentForm, RoomForm, GarageForm, LandPlotForm]]:
         """
             Метод который возвращает вторую форму в зависимости от типа объявления
         """
         return self.form_class_sets[self.object.content_type.model_class().__name__]
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         self.second_form_class = self.get_second_form_class()
         additional_form = self.second_form_class(instance=self.object.content_object)
@@ -322,7 +324,7 @@ class EditRealtyAd(PermissionRequiredMixin, UpdateView):
         context['additional_form'] = additional_form
         return context
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         self.object = self.get_object()
         ad_form = self.form_class(request.POST, instance=self.object)
         self.second_form_class = self.get_second_form_class()
