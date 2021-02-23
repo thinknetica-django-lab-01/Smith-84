@@ -62,7 +62,7 @@ class Ad(models.Model):
     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
 
     def save(self, *args, **kwargs):
-        self.slug = f"{slugify(self.description).replace(' ', '-')}-{str(self.uniq_id)}"
+        self.slug = f"{slugify(self.description)[:30].replace(' ', '-')}-{str(self.uniq_id)}"
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -78,6 +78,7 @@ class Ad(models.Model):
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
+        ordering = ['date_added']
 
 
 class Image(models.Model):

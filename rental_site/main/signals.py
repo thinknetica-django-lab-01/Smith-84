@@ -1,7 +1,7 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User, Group
-from .models import *
+from .models import Subscribers, Profile, Ad
 from .utils import get_message_body
 from .task import send_mail_new_users, send_subscribers_new_ads
 

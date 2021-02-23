@@ -7,10 +7,11 @@ from django.forms.models import inlineformset_factory
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib import messages
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
-from .models import *
-from .forms import *
+# from django.views.decorators.cache import cache_page
+# from django.utils.decorators import method_decorator
+from django.contrib.auth.models import User
+from .models import Ad, Apartment, Room, Garage, LandPlot, Image, Tag
+from .forms import SubscribersForm, SearchApartmentForm, UserForm, ProfileForm, ApartmentForm, GarageForm, LandPlotForm, AdForm, RoomForm
 from django.core.cache import cache
 
 # Create your views here.
@@ -196,7 +197,7 @@ class RealtyList(LoginRequiredMixin, View):
         return render(request, 'choice_type.html')
 
 
-class AddRealtyAdMixin(PermissionRequiredMixin, CreateView):
+class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
     """
         Базовая вью добавления объявлений
     """
@@ -279,7 +280,7 @@ class SaveImages(PermissionRequiredMixin, UpdateView):
             image_formset.save()
             return redirect(reverse('ad_detail', kwargs={'slug': self.object.slug}))
         else:
-            messages.error(request, f'Ошибка! Загрузите изображение!')
+            messages.error(request, 'Ошибка! Загрузите изображение!')
             return self.render_to_response(self.get_context_data())
 
 

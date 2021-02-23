@@ -1,7 +1,7 @@
 from django import forms
-from .models import *
+from django.contrib.auth.models import User
+from .models import Ad, Apartment, Room, Garage, LandPlot, Profile, Subscribers, Region
 from django.core.exceptions import ValidationError
-from crispy_forms.helper import FormHelper
 
 
 class UserForm(forms.ModelForm):
@@ -83,7 +83,7 @@ class SearchApartmentForm(forms.Form):
 
     room_count = forms.ChoiceField(required=True, choices=ROOM_CHOICES, label='Количество комнат')
     action = forms.ChoiceField(required=True, choices=BUILDING_CHOICES, label='Тип жилья')
-    price = forms.ChoiceField(required=True, choices=PRICE_RANGE,label='Стоимость')
+    price = forms.ChoiceField(required=True, choices=PRICE_RANGE, label='Стоимость')
     region = forms.ModelChoiceField(required=True, queryset=Region.objects.all(), label='Населенный пункт')
 
     room_count.widget.attrs.update({'class': 'form-control', 'id': 'ptypes'})
