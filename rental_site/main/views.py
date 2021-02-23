@@ -154,6 +154,7 @@ class Dashboard(LoginRequiredMixin, View):
     """
         Класс-представление страницы кабинета пользователя
     """
+
     def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, 'dashboard.html')
 
@@ -222,7 +223,7 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
         context['additional_form'] = self.second_form_class
         return context
 
-    def form_valid(self, form) -> Union[HttpResponse, HttpResponseRedirect]:
+    def form_valid(self, form: Union[ApartmentForm, RoomForm, GarageForm, LandPlotForm]) -> Union[HttpResponse, HttpResponseRedirect]:
         if form.is_valid():
             obj = form.save(commit=False)
             ad_form = self.second_form_class(data=self.request.POST, instance=obj)
