@@ -18,7 +18,7 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=12, blank=True)
     age = models.PositiveSmallIntegerField(blank=True, null=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Profile for user {}'.format(self.user)
 
 
@@ -29,10 +29,10 @@ class Region(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название', unique=True, db_index=True)
     slug = models.SlugField(primary_key=True, blank=True)
 
-    def __str__(self):
-        return self.name
+    def __str__(self) -> str:
+        return str(self.name)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
@@ -70,21 +70,21 @@ class Ad(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         self.slug = f"{slugify(self.description)[:30].replace(' ', '-')}-{str(self.uniq_id)}"
         super().save(*args, **kwargs)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse('ad_detail', kwargs={'slug': self.slug})
 
-    def get_full_absolute_url(self):
+    def get_full_absolute_url(self) -> str:
         """
           Ссылка на объявлении с доменом в адрессе
         """
         domain = Site.objects.get_current().domain
         return f'http://{domain}{self.get_absolute_url()}'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.description[:40]
 
     class Meta:
@@ -129,7 +129,7 @@ class Apartment(Realty):
         verbose_name = 'Квартира'
         verbose_name_plural = 'Квартиры'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Квартира'
 
 
@@ -143,7 +143,7 @@ class Room(Realty):
         verbose_name = 'Комната'
         verbose_name_plural = 'Комнаты'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Комната'
 
 
@@ -157,7 +157,7 @@ class Garage(Realty):
         verbose_name = 'Гараж'
         verbose_name_plural = 'Гаражы'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Гараж'
 
 
@@ -169,7 +169,7 @@ class LandPlot(Realty):
         verbose_name = 'Земельный участок'
         verbose_name_plural = 'Земельные участки'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Земля'
 
 
@@ -181,7 +181,7 @@ class Tag(models.Model):
     slug = models.SlugField(blank=True)
     ads = models.ManyToManyField(Ad)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         self.slug = f"{slugify(self.name).replace(' ', '-')}"
         super().save(*args, **kwargs)
 
