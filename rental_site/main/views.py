@@ -23,9 +23,8 @@ from typing import Dict, Any, Union, Type
 
 
 class Index(View):
-    """
-        Класс-представление основной страницы
-    """
+    """Класс-представление основной страницы."""
+
     template_name = 'index.html'
     sub_form = SubscribersForm
     search_form = SearchApartmentForm
@@ -45,9 +44,8 @@ class Index(View):
 
 
 class AdsListMixin(ListView):
-    """
-        Базовый класс-представление списка объявлений
-    """
+    """Базовый класс-представление списка объявлений."""
+
     model = Ad
     template_name = 'list_ad.html'
     context_object_name = 'ads'
@@ -74,66 +72,58 @@ class AdsListMixin(ListView):
 
 
 class ApartmentSell(AdsListMixin):
-    """
-        Класс-представление списка объявлений квартир для продажы
-    """
+    """Класс-представление списка объявлений квартир для продажы."""
+
     realty = Apartment
     action = 'sell'
 
 
 class ApartmentRent(AdsListMixin):
-    """
-        Класс-представление списка объявлений квартир для аренды
-    """
+    """Класс-представление списка объявлений квартир для аренды."""
+
     realty = Apartment
     action = 'rent'
 
 
 class RoomSell(AdsListMixin):
-    """
-        Класс-представление списка объявлений комнат для продажы
-    """
+    """Класс-представление списка объявлений комнат для продажы."""
+
     realty = Room
     action = 'sell'
 
 
 class RoomRent(AdsListMixin):
-    """
-        Класс-представление списка объявлений комнат для аренды
-    """
+    """Класс-представление списка объявлений комнат для аренды."""
+
     realty = Room
     action = 'rent'
 
 
 class GarageSell(AdsListMixin):
-    """
-        Класс-представление списка объявлений гаражей для продажы
-    """
+    """Класс-представление списка объявлений гаражей для продажы."""
+
     realty = Garage
     action = 'sell'
 
 
 class GarageRent(AdsListMixin):
-    """
-        Класс-представление списка объявлений гаражей для аренды
-    """
+    """Класс-представление списка объявлений гаражей для аренды."""
+
     realty = Garage
     action = 'rent'
 
 
 class LandPlotSell(AdsListMixin):
-    """
-        Класс-представление списка объявлений земельных участков
-    """
+    """Класс-представление списка объявлений земельных участков."""
+
     realty = LandPlot
     action = 'sell'
 
 
 # @method_decorator(cache_page(60 * 5), name='dispatch')
 class AdDetail(DetailView):
-    """
-        Класс-представление страницы объявления
-    """
+    """Класс-представление страницы объявления."""
+
     model = Ad
     template_name = 'item_ad.html'
 
@@ -151,18 +141,15 @@ class AdDetail(DetailView):
 
 
 class Dashboard(LoginRequiredMixin, View):
-    """
-        Класс-представление страницы кабинета пользователя
-    """
+    """Класс-представление страницы кабинета пользователя."""
 
     def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, 'dashboard.html')
 
 
 class UserUpdate(LoginRequiredMixin, UpdateView):
-    """
-        Класс-представление страницы для редактирования профиля пользователя
-    """
+    """Класс-представление страницы для редактирования профиля пользователя."""
+
     model = User
     form_class = UserForm
     second_form_class = ProfileForm
@@ -208,9 +195,8 @@ class RealtyList(LoginRequiredMixin, View):
 
 
 class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
-    """
-        Базовый класс-представление страницы добавления объявления
-    """
+    """Базовый класс-представление страницы добавления объявления."""
+
     model = None
     form_class = None
     second_form_class = generic_inlineformset_factory(Ad, form=AdForm, extra=1, can_delete=False)
@@ -242,41 +228,36 @@ class AddRealtyAdMixin(LoginRequiredMixin, CreateView):
 
 
 class AddApartment(AddRealtyAdMixin):
-    """
-        Класс-представление страницы добавляния объявления типа квартира
-    """
+    """Класс-представление страницы добавляния объявления типа квартира."""
+
     model = Apartment
     form_class = ApartmentForm
 
 
 class AddRoom(AddRealtyAdMixin):
-    """
-        Класс-представление страницы добавляния объявления типа комнаты
-    """
+    """Класс-представление страницы добавляния объявления типа комнаты."""
+
     model = Room
     form_class = RoomForm
 
 
 class AddLandPlot(AddRealtyAdMixin):
-    """
-        Класс-представление страницы добавляния объявления типа земельный участок
-    """
+    """Класс-представление страницы добавляния объявления типа земельный участок."""
+
     model = LandPlot
     form_class = LandPlotForm
 
 
 class AddGarage(AddRealtyAdMixin):
-    """
-        Класс-представление страницы добавляния объявления типа гараж
-    """
+    """Класс-представление страницы добавляния объявления типа гараж."""
+
     model = Garage
     form_class = GarageForm
 
 
 class SaveImages(PermissionRequiredMixin, UpdateView):
-    """
-        Класс-представление страницы добавление картинок к объявлению
-    """
+    """Класс-представление страницы добавление картинок к объявлению."""
+
     model = Ad
     form_class = inlineformset_factory(Ad, Image, fields=('image',), extra=3, min_num=1)
     template_name = 'form_files.html'
@@ -295,9 +276,8 @@ class SaveImages(PermissionRequiredMixin, UpdateView):
 
 
 class EditRealtyAd(PermissionRequiredMixin, UpdateView):
-    """
-        Класс-представление страницы редактирования объявления
-    """
+    """Класс-представление страницы редактирования объявления."""
+
     model = Ad
     form_class = AdForm
     template_name = 'form.html'
@@ -312,9 +292,8 @@ class EditRealtyAd(PermissionRequiredMixin, UpdateView):
     permission_required = 'main.change_ad'
 
     def get_second_form_class(self) -> Type[Union[ApartmentForm, RoomForm, GarageForm, LandPlotForm]]:
-        """
-            Метод который возвращает вторую форму в зависимости от типа объявления
-        """
+        """Метод который возвращает вторую форму в зависимости от типа объявления."""
+
         return self.form_class_sets[self.object.content_type.model_class().__name__]
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
