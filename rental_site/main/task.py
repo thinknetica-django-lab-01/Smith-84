@@ -8,9 +8,8 @@ from .utils import get_message_body
 
 @app.task(name='week_mailing')
 def week_mailing():
-    """
-        Рассылка новых объявлений за неделю
-    """
+    """Рассылка новых объявлений за неделю."""
+
     to_date = datetime.datetime.now()
     from_date = to_date - datetime.timedelta(7)
     subscribers = Subscribers.objects.all().values_list('email', flat=True)
