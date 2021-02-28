@@ -1,6 +1,6 @@
 FROM python:3.8.3-alpine
 
-WORKDIR /home/vladimir/home-dev/Smith-84/rental_site
+WORKDIR /rental_site
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
