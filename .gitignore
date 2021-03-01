@@ -144,3 +144,5 @@ cython_debug/
 */static/
 */media/
 /docs/_build/
+/docs/_static/
+/docs/_templates/

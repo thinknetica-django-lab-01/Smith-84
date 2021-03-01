@@ -15,4 +15,4 @@ class Command(BaseCommand):
             garage = GarageFactory()
             AdFactory(user=user, region=region, content_object=garage)
 
-        self.stdout.write('Тестовые данные успешно сгенерированы!')
+        self.stdout.write(self.style.SUCCESS('Тестовые данные успешно сгенерированы!'))
