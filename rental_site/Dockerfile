@@ -27,7 +27,6 @@ RUN apk update && apk add make \
 
 # https://stackoverflow.com/questions/52894632/cannot-install-pycosat-on-alpine-during-dockerizing
 RUN echo "#include <unistd.h>" > /usr/include/sys/unistd.h
-
 RUN pip3 install --upgrade pip
 COPY requirements.txt .
 RUN pip install -r requirements.txt
