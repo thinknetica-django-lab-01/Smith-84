@@ -25,9 +25,8 @@ def add_user_to_group(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 @disable_for_loaddata
 def send_mail_new_user(sender, instance, created, **kwargs):
-    """
-        Welcome сообщение
-    """
+    """Welcome сообщение."""
+
     if created:
         send_mail_new_users.delay(email=instance.email)
 
@@ -35,9 +34,8 @@ def send_mail_new_user(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Ad)
 @disable_for_loaddata
 def send_subscribers_new_ad(sender, instance, created, **kwargs):
-    """
-        Рассылка новых объявлений сразу при добавлении на сайт
-    """
+    """Рассылка новых объявлений сразу при добавлении на сайт."""
+
     if created:
         subscribers = list(Subscribers.objects.all().values_list('email', flat=True))
         message_body = get_message_body(ads=[instance])

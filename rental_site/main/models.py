@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.shortcuts import reverse
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -11,9 +11,8 @@ from django.contrib.sites.models import Site
 
 
 class Profile(models.Model):
-    """
-        Профайл пользователя
-    """
+    """Профайл пользователя."""
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=12, blank=True)
     age = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -23,9 +22,8 @@ class Profile(models.Model):
 
 
 class Region(models.Model):
-    """
-        Регион
-    """
+    """Регион."""
+
     name = models.CharField(max_length=200, verbose_name='Название', unique=True, db_index=True)
     slug = models.SlugField(primary_key=True, blank=True)
 
@@ -42,9 +40,8 @@ class Region(models.Model):
 
 
 class Ad(models.Model):
-    """
-        Объявление недвижимости
-    """
+    """Объявление недвижимости."""
+
     uniq_id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -54,6 +51,12 @@ class Ad(models.Model):
     slug = models.SlugField(blank=True)
     date_added = models.DateField(auto_now_add=True)
     view_count = models.PositiveIntegerField(default=0)
+    STATUS_CHOICES = [
+        ('published', 'Опубликовано'),
+        ('not_active', 'Модерируется'),
+        ('archive', 'Архив'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='not_active')
     ACTION_CHOICES = [
         ('sell', 'Продажа'),
         ('rent', 'Аренда'),
@@ -78,9 +81,8 @@ class Ad(models.Model):
         return reverse('ad_detail', kwargs={'slug': self.slug})
 
     def get_full_absolute_url(self) -> str:
-        """
-          Ссылка на объявлении с доменом в адрессе
-        """
+        """Ссылка на объявлении с доменом в адрессе."""
+
         domain = Site.objects.get_current().domain
         return f'http://{domain}{self.get_absolute_url()}'
 
@@ -94,17 +96,15 @@ class Ad(models.Model):
 
 
 class Image(models.Model):
-    """
-        Фото объекта недвижимости
-    """
+    """Фото объекта недвижимости."""
+
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, default=True)
     image = models.ImageField(upload_to='image_folder', verbose_name='Изображение')
 
 
 class Realty(models.Model):
-    """
-        Базовый класс модели недвижимость
-    """
+    """Базовый класс модели недвижимость."""
+
     total_square = models.FloatField(default=True)
 
     class Meta:
@@ -112,9 +112,8 @@ class Realty(models.Model):
 
 
 class Apartment(Realty):
-    """
-        Квартира
-    """
+    """Квартира."""
+
     BUILDING_CHOICES = ([
         ('new', 'Новостройка'),
         ('second', 'Вторичка')
@@ -134,9 +133,8 @@ class Apartment(Realty):
 
 
 class Room(Realty):
-    """
-        Комната
-    """
+    """Комната."""
+
     floor = models.PositiveSmallIntegerField()
 
     class Meta:
@@ -148,9 +146,8 @@ class Room(Realty):
 
 
 class Garage(Realty):
-    """
-        Гараж
-    """
+    """Гараж."""
+
     number_of_floors = models.PositiveSmallIntegerField()
 
     class Meta:
@@ -162,9 +159,8 @@ class Garage(Realty):
 
 
 class LandPlot(Realty):
-    """
-        Земельный участок
-    """
+    """Земельный участок."""
+
     class Meta:
         verbose_name = 'Земельный участок'
         verbose_name_plural = 'Земельные участки'
@@ -174,9 +170,8 @@ class LandPlot(Realty):
 
 
 class Tag(models.Model):
-    """
-        Тэги сайта
-    """
+    """Тэги сайта."""
+
     name = models.CharField(max_length=50)
     slug = models.SlugField(blank=True)
     ads = models.ManyToManyField(Ad)
@@ -191,7 +186,6 @@ class Tag(models.Model):
 
 
 class Subscribers(models.Model):
-    """
-        Подписчики на рассылку объявлений
-    """
+    """Подписчики на рассылку объявлений."""
+
     email = models.EmailField(unique=True)

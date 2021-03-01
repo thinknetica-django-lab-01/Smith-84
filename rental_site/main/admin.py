@@ -17,9 +17,44 @@ class FlatPageAdmin(FlatpageFormOld):
     }
 
 
+def make_published(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.status = 'published'
+        obj.save()
+
+
+def make_archival(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.status = 'archive'
+        obj.save()
+
+
+class TagFilter(admin.SimpleListFilter):
+    title = 'Тэги'
+    parameter_name = 'tag'
+
+    def lookups(self, request, model_admin):
+        return list([(tag['id'], tag['name']) for tag in Tag.objects.all().values('id', 'name').distinct()])
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(tag__id=self.value())
+
+
+
+class AdAdmin(admin.ModelAdmin):
+    actions = [make_published, make_archival]
+    list_display = ('description', 'date_added', 'status')
+    list_filter = (TagFilter,)
+
+
+make_published.short_description = "Опубликовать объявления"
+make_archival.short_description = "Отправить в архив"
+
+
+admin.site.register(Ad, AdAdmin)
 admin.site.register(FlatPage, FlatPageAdmin)
 admin.site.register(Region)
-admin.site.register(Ad)
 admin.site.register(Apartment)
 admin.site.register(Room)
 admin.site.register(Garage)
