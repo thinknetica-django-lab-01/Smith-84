@@ -73,7 +73,7 @@ class Ad(models.Model):
     })
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey(ct_field='content_type', fk_field='object_id')
-    tags = ArrayField(models.CharField(max_length=50, blank=True))
+    custom_tags = ArrayField(models.CharField(max_length=50, blank=True))
 
     def save(self, *args, **kwargs) -> None:
         self.slug = f"{slugify(self.description)[:30].replace(' ', '-')}-{str(self.uniq_id)}"

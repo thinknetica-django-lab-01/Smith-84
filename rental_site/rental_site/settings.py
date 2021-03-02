@@ -179,8 +179,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 REDIS_HOST = 'redis'
 REDIS_PORT = '6379'
 
-BROKER_URL = 'redis://redis:6379'
-CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/'
+BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/'
+CELERY_BROKER_URL = BROKER_URL
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -195,7 +195,7 @@ CELERY_BEAT_SCHEDULE = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis: //redis:6379/1',
+        'LOCATION': 'redis: //' + REDIS_HOST + ':6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
