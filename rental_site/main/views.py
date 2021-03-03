@@ -12,12 +12,12 @@ from django.contrib import messages
 from django.contrib.auth.models import User, AnonymousUser
 from .models import Ad, Apartment, Room, Garage, LandPlot, Image, Tag
 from .forms import AdForm, RoomForm, ApartmentForm, GarageForm, LandPlotForm
-from .forms import SubscribersForm, SearchApartmentForm, UserForm, ProfileForm
+from .forms import SubscribersForm, SearchForm, UserForm, ProfileForm
 from django.core.cache import cache
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from typing import Dict, Any, Union, Type
-
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 # Create your views here.
 
@@ -27,7 +27,7 @@ class Index(View):
 
     template_name = 'index.html'
     sub_form = SubscribersForm
-    search_form = SearchApartmentForm
+    search_form = SearchForm
 
     def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, self.template_name, context={'sub_form': self.sub_form, 'search_form': self.search_form})
@@ -325,3 +325,15 @@ class EditRealtyAd(PermissionRequiredMixin, UpdateView):
             messages.error(request, f'Ошибка! {ad_form.errors.as_text()}')
 
         return self.render_to_response(self.get_context_data())
+
+
+class SearchAd(ListView):
+    model = Ad
+    template_name = 'list_ad.html'
+    context_object_name = 'ads'
+    paginate_by = 10
+
+    def get_queryset(self) -> 'QuerySet[Ad]':
+        query = SearchQuery(self.request.GET['search'])
+        vector = SearchVector('description')
+        return self.model.objects.annotate(rank=SearchRank(vector, query)).order_by('-rank')

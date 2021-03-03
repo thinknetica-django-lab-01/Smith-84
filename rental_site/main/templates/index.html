@@ -13,23 +13,9 @@
         <!-- Type -->
         <div class="full_search_box nexio_search lightanic_search hero_search-radius modern">
             <div class="search_hero_wrapping">
-                    <form class="row">
-                        {% csrf_token %}
-                        {% for field in search_form %}
-                            <div class="col-lg-{% cycle 2 2 3 3 %} col-md-2 col-sm-12">
-                                <div class="form-group">
-                                    <label>{{ field.label }}</label>
-                                    <div class="input-with-icon">
-                                        {{ field }}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                        <div class="col-lg-2 col-md-2 col-sm-12 small-padd">
-                            <div class="form-group none">
-                                <a href="#" class="btn search-btn">Search</a>
-                            </div>
-                        </div>
+                    <form method="get" action="{% url 'search_ad' %}" class="row">
+                        {{ search_form.as_p }}
+                        <button type="submit" class="btn search-btn">Search</button>
                     </form>
             </div>
         </div>

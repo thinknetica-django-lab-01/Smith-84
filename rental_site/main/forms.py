@@ -90,3 +90,8 @@ class SearchApartmentForm(forms.Form):
     action.widget.attrs.update({'class': 'form-control', 'id': 'lookingfor'})
     price.widget.attrs.update({'class': 'form-control', 'id': 'price'})
     region.widget.attrs.update({'class': 'form-control', 'id': 'location'})
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(required=True)
+    search.widget.attrs.update({'class': 'form-control', 'id': 'search'})
