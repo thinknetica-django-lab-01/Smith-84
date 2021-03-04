@@ -26,4 +26,5 @@ urlpatterns = [
 
     path('ad/add/photos/<uuid:pk>/', views.SaveImages.as_view(), name='add_image'),
     path('ad/edit/<uuid:pk>/', views.EditRealtyAd.as_view(), name='edit_ad'),
+    path('search/', views.SearchAd.as_view(), name='search_ad'),
 ]
