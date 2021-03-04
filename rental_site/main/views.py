@@ -15,10 +15,9 @@ from .forms import AdForm, RoomForm, ApartmentForm, GarageForm, LandPlotForm
 from .forms import SubscribersForm, SearchForm, UserForm, ProfileForm
 from django.core.cache import cache
 from django.db.models.query import QuerySet
-from django.http import HttpResponseRedirect, HttpResponse, HttpRequest, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from typing import Dict, Any, Union, Type
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
-from django.core.exceptions import SuspiciousOperation
 
 # Create your views here.
 
@@ -334,10 +333,11 @@ class SearchAd(ListView):
     context_object_name = 'ads'
     paginate_by = 10
 
-    def get_queryset(self) -> Union['QuerySet[Ad]', HttpResponseBadRequest]:
-        search_text = self.request.GET['search']
+    def get_queryset(self) -> 'QuerySet[Ad]':
+        queryset = self.model.objects.all()
+        search_text = self.request.GET.get('search')
         if search_text is not None:
             query = SearchQuery(search_text)
             vector = SearchVector('description')
-            return self.model.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gte=0.3).order_by('-rank')
-        raise SuspiciousOperation
+            queryset = self.model.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gte=0.03).order_by('-rank')
+        return queryset
