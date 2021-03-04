@@ -64,9 +64,14 @@ class AdsListMixin(ListView):
             'action': self.action,
             'content_type': ContentType.objects.get_for_model(self.realty)
         }
-        current_tag = self.request.GET.get('tag')
-        if current_tag is not None:
-            data_to_query['tag__slug'] = current_tag
+        tag = self.request.GET.get('tag')
+        custom_tag = self.request.GET.get('custom_tag')
+
+        if tag is not None:
+            data_to_query['tag__slug'] = tag
+
+        if custom_tag is not None:
+            data_to_query['custom_tags__contains'] = [custom_tag]
 
         return Ad.objects.filter(**data_to_query)
 

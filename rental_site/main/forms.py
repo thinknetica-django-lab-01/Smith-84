@@ -26,7 +26,7 @@ class ProfileForm(forms.ModelForm):
 class AdForm(forms.ModelForm):
     class Meta:
         model = Ad
-        fields = ('region', 'description', 'cost', 'address', 'action', )
+        fields = ('region', 'description', 'cost', 'address', 'action', 'custom_tags', )
 
 
 class ApartmentForm(forms.ModelForm):

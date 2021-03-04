@@ -87,6 +87,11 @@
                                         </a>
                                     </h4>
                                     <p>{{ ad.address }}, {{ ad.region }}</p>
+                                    <p>
+                                        {% for custom_tag in ad.custom_tags %}
+                                            <a href="?custom_tag={{ custom_tag }}">{{ custom_tag }}</a>
+                                        {% endfor %}
+                                    </p>
                                 </div>
                                 <div class="listing-footer-wrap property-lists mt-2">
                                     <div class="property-lists flex-1">
