@@ -2,6 +2,9 @@ from .utils import check_mobile_ua
 
 
 class MobileDetectMiddleware:
+    """
+        Проверяет request на мобильный ua и добавляет флаг is_mobile в request.
+    """
     def __init__(self, get_response):
         self.get_response = get_response
 
