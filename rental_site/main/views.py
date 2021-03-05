@@ -31,12 +31,11 @@ class Index(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, template_name=self.get_template_names(), context={'sub_form': self.sub_form, 'search_form': self.search_form})
 
-    def get_template_names(self, *args, **kwargs):
-        if hasattr(self, 'is_mobile'):
-            if self.is_mobile:
-                return ['mobile_index.html']
+    def get_template_names(self):
+        is_mobile = getattr(self.request, 'is_mobile', False)
+        if is_mobile:
+            return ['mobile_index.html']
         return ['index.html']
-
 
     def post(self, request: HttpRequest) -> HttpResponse:
         fill_form = self.sub_form(request.POST)
