@@ -10,4 +10,4 @@ class MobileDetectMiddleware:
         return response
 
     def process_view(self, request, view_func, *view_args, **view_kwargs):
-        setattr(view_func.view_class, 'is_mobile',  check_mobile_ua(request))
+        setattr(request, 'is_mobile',  check_mobile_ua(request))
