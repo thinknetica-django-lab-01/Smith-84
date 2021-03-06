@@ -104,6 +104,29 @@ class Image(models.Model):
     image = models.ImageField(upload_to='image_folder', verbose_name='Изображение')
 
 
+class UserAd(models.Model):
+    """
+    PostgreSQL View
+    SQL:
+        CREATE OR REPLACE VIEW user_ad AS
+            SELECT ad.description as ad_description, ad.region_id as ad_region, ad.cost as ad_cost, ad.user_id as user_id
+            FROM django_db.public.main_ad as ad
+            INNER JOIN django_db.public.auth_user AS u on u.id = user_id
+    """
+
+    user_id = models.IntegerField()
+    ad_description = models.CharField(max_length=255)
+    ad_region = models.CharField(max_length=200)
+    ad_cost = models.PositiveIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = "user_ad"
+
+    def __str__(self):
+        return self.ad_description
+
+
 class Realty(models.Model):
     """Базовый класс модели недвижимость."""
 
