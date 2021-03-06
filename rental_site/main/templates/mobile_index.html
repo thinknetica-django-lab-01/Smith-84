@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% include 'components/header.html' %}
+<div class="image-cover hero_banner" style="background:#334aca url('https://cs8.pikabu.ru/post_img/big/2017/08/11/4/1502425645172160116.jpg') no-repeat;" data-overlay="1">
+    <div class="container">
+
+        <h1 class="big-header-capt mb-0">Продажа недвижимости Хакасии</h1>
+        <p class="text-center mb-5">Квартиры, Комнаты, Недвижимость - Абакан, Саяногорск, Сорск, Черногорск, Абаза</p>
+        <!-- Type -->
+        <div class="full_search_box nexio_search lightanic_search hero_search-radius modern">
+            <div>
+                    <form method="get" action="{% url 'search_ad' %}" class="row">
+                        {{ search_form.as_p }}
+                        <button type="submit" class="btn">Search</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================ Hero Banner End ================================== -->
+
+{% for ads in best_deal_ads %}
+    {% for ad in ads %}
+    {% endfor %}
+{% endfor %}
+
+
+{% include 'components/subscribe/subscribe.html' %}
+{% include 'components/footer.html' %}
+{% endblock %}

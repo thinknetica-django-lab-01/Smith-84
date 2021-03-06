@@ -25,12 +25,17 @@ from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 class Index(View):
     """Класс-представление основной страницы."""
 
-    template_name = 'index.html'
     sub_form = SubscribersForm
     search_form = SearchForm
 
     def get(self, request: HttpRequest) -> HttpResponse:
-        return render(request, self.template_name, context={'sub_form': self.sub_form, 'search_form': self.search_form})
+        return render(request, template_name=self.get_template_names(), context={'sub_form': self.sub_form, 'search_form': self.search_form})
+
+    def get_template_names(self):
+        is_mobile = getattr(self.request, 'is_mobile', False)
+        if is_mobile:
+            return ['mobile_index.html']
+        return ['index.html']
 
     def post(self, request: HttpRequest) -> HttpResponse:
         fill_form = self.sub_form(request.POST)
@@ -40,7 +45,7 @@ class Index(View):
         else:
             messages.error(request, f'Ошибка! {fill_form.errors.as_text()} ')
 
-        return render(request, self.template_name, context={'sub_form': self.sub_form})
+        return render(request, template_name=self.get_template_names(), context={'sub_form': self.sub_form})
 
 
 class AdsListMixin(ListView):
