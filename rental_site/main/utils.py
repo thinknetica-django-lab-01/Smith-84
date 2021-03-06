@@ -4,7 +4,7 @@ from functools import wraps
 
 
 def check_mobile_ua(request):
-    """Возвращает True если request мобильного девайса"""
+    """Возвращает True если request мобильного девайса."""
 
     mobile_agent_re = re.compile(r".*(iphone|mobile|androidtouch)", re.IGNORECASE)
     if mobile_agent_re.match(request.META['HTTP_USER_AGENT']):

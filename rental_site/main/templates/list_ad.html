@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% load custom_tags %}
+{% block meta %}
+    <title>{{ action }} {{ realty }} в республике Хакасия</title>
+    <meta name="description" content="{{ action }} {{ realty }}. Объявления в республике Хакасия." />
+{% endblock %}
 {% block content %}
 {% include 'components/header.html' %}
 <div class="filterspaces">

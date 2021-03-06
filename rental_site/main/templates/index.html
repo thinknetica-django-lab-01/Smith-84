@@ -1,4 +1,15 @@
 {% extends 'base.html' %}
+{% block json_ld %}
+<script type='application/ld+json'>
+    {
+      "@context": "http://www.schema.org",
+      "@type": "WebSite",
+      "name": "Продажа недвижимости хакасии",
+      "alternateName": "Продажа и аренда недвижимости в республики хакасия",
+      "url": "http://0.0.0.0:8000/"
+    }
+ </script>
+{% endblock %}
 {% load custom_tags %}
 {% block content %}
 {% load crispy_forms_tags %}
