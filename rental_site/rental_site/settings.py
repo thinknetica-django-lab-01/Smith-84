@@ -34,7 +34,7 @@ ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS").split(" ")
 
 
 sentry_sdk.init(
-    dsn="https://63d34c80eb6148bc8e95482de36ad3ab@o542973.ingest.sentry.io/5662987",
+    dsn=config("SENTRY_DSN"),
     integrations=[DjangoIntegration(), CeleryIntegration()],
     traces_sample_rate=1.0,
     send_default_pii=True
@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'django_celery_beat'
+    'django_celery_beat',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [
