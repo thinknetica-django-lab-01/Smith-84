@@ -19,7 +19,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from typing import Dict, Any, Union, Type
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
-
+from rest_framework import viewsets
 # Create your views here.
 
 
