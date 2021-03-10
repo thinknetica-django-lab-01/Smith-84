@@ -1,0 +1,434 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger Rental Site
+  description: Rental site API
+  contact:
+    name: Vladimir Stepanov
+    email: 309vslexus@gmail.com
+tags:
+- name: region 
+- name: apartment
+- name: room
+- name: garage
+- name: land-plot
+paths:
+  /api/region/:
+    get:
+      tags:
+      - region
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Region'
+  /api/apartment/{adId}/:
+    get:
+      tags:
+      - apartment
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ApartmentAd'
+    delete:
+      tags:
+      - apartment
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: successful operation
+    put:
+      tags:
+      - apartment
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ApartmentAd'
+      responses:
+        200:
+          description: successful operation
+  /api/apartment/:
+    get:
+      tags:
+      - apartment
+      parameters:
+      - in: query
+        name: action
+        type: string
+      - in: query
+        name: region
+        type: integer
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ApartmentAd'
+    post:
+      tags:
+        - apartment
+      parameters:
+      - in: body
+        name: ApartmentAd
+        schema:
+          $ref: '#/definitions/ApartmentAd'
+      responses:
+        200:
+          description: successful operation
+  /api/room/{adId}/:
+    get:
+      tags:
+      - room
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RoomAd'
+    delete:
+      tags:
+      - room
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: successful operation
+    put:
+      tags:
+      - room
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/RoomAd'
+      responses:
+        200:
+          description: successful operation
+  /api/room/:
+    get:
+      tags:
+      - room
+      parameters:
+      - in: query
+        name: action
+        type: string
+      - in: query
+        name: region
+        type: integer
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RoomAd'
+    post:
+      tags:
+      - room
+      parameters:
+      - in: body
+        name: RoomAd
+        schema:
+          $ref: '#/definitions/RoomAd'
+      responses:
+        200:
+          description: successful operation
+  /api/garage/{adId}/:
+    get:
+      tags:
+      - garage
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GarageAd'
+    delete:
+      tags:
+      - garage
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: successful operation
+    put:
+      tags:
+      - garage
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/GarageAd'
+      responses:
+        200:
+          description: successful operation
+  /api/garage/:
+    get:
+      tags:
+      - garage
+      parameters:
+      - in: query
+        name: action
+        type: string
+      - in: query
+        name: region
+        type: integer
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GarageAd'
+    post:
+      tags:
+      - garage
+      parameters:
+      - in: body
+        name: GarageAd
+        schema:
+          $ref: '#/definitions/GarageAd'
+      responses:
+        200:
+          description: successful operation
+  /api/land-plot/{adId}/:
+    get:
+      tags:
+      - land-plot
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LandPlotAd'
+    delete:
+      tags:
+      - land-plot
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: successful operation
+    put:
+      tags:
+      - land-plot
+      parameters:
+      - name: adId
+        in: path
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/LandPlotAd'
+      responses:
+        200:
+          description: successful operation
+  /api/land-plot/:
+    get:
+      tags:
+      - land-plot
+      parameters:
+      - in: query
+        name: region
+        type: integer
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LandPlotAd'
+    post:
+      tags:
+      - land-plot
+      parameters:
+      - in: body
+        name: LandPlotAd
+        schema:
+          $ref: '#/definitions/LandPlotAd'
+      responses:
+        200:
+          description: successful operation
+definitions:
+    Region:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    LandPlotAd:
+      type: object
+      required:
+      - ad_data
+      - total_square
+      properties:
+        ad_data:
+          $ref: '#/definitions/Ad'
+        total_square:
+          type: integer
+          format: int64
+    GarageAd:
+      type: object
+      required:
+      - ad_data
+      - total_square
+      - number_of_floors
+      properties:
+        ad_data:
+          $ref: '#/definitions/Ad'
+        number_of_floors:
+          type: integer
+          format: int64
+        total_square:
+          type: integer
+          format: int64
+    RoomAd:
+      type: object
+      required:
+      - ad_data
+      - total_square
+      - floor
+      properties:
+        ad_data:
+          $ref: '#/definitions/Ad'
+        floor:
+          type: integer
+          format: int64
+        total_square:
+          type: integer
+          format: int64
+    ApartmentAd:
+      type: object
+      required:
+      - ad_data
+      - total_square
+      - floor
+      - building
+      - living_square
+      - kitchen_square
+      - number_of_rooms
+      properties:
+        ad_data:
+          $ref: '#/definitions/Ad'
+        floor:
+          type: integer
+          format: int64
+        total_square:
+          type: integer
+          format: int64
+        building:
+          type: string
+          enum: 
+           - new 
+           - second
+        living_square:
+          type: integer
+          format: int64
+        kitchen_square:
+          type: integer
+          format: int64
+        number_of_rooms:
+          type: integer
+          format: int64
+    Ad:
+      type: object
+      required:
+      - region
+      - action
+      - total_square
+      - cost
+      - description
+      - address
+      properties:
+        region:
+          type: integer
+          format: int64
+        action:
+          type: string
+          enum: 
+           - sell 
+           - rent
+        total_square:
+          type: integer
+          format: int64
+        cost:
+          type: integer
+          format: int64
+        description:
+          type: string
+        address:
+          type: string
