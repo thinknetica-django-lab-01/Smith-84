@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib import messages
 # from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_GET
 # from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, AnonymousUser
 from .models import Ad, Apartment, Room, Garage, LandPlot, Image, Tag
@@ -351,3 +352,14 @@ class SearchAd(ListView):
             vector = SearchVector('description')
             queryset = self.model.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gte=0.03).order_by('-rank')
         return queryset
+
+
+@require_GET
+def robots_txt(request: HttpRequest) -> HttpResponse:
+    """Представление для файла robots.txt."""
+
+    lines = [
+        "User-Agent: *",
+        "Disallow: /admin/",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
