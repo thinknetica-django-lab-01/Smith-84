@@ -190,7 +190,7 @@ MESSAGE_TAGS = {
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Redis settings
-REDIS_HOST = 'redis'
+REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
 
 BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/'

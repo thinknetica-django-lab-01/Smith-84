@@ -26,7 +26,7 @@ class Region(models.Model):
     """Регион."""
 
     name = models.CharField(max_length=200, verbose_name='Название', unique=True, db_index=True)
-    slug = models.SlugField(primary_key=True, blank=True)
+    slug = models.SlugField(blank=True)
 
     def __str__(self) -> str:
         return str(self.name)

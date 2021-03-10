@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_GET
 # from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, AnonymousUser
-from .models import Ad, Apartment, Room, Garage, LandPlot, Image, Tag
+from .models import Ad, Apartment, Room, Garage, LandPlot, Image, Tag, Region
 from .forms import AdForm, RoomForm, ApartmentForm, GarageForm, LandPlotForm
 from .forms import SubscribersForm, SearchForm, UserForm, ProfileForm
 from django.core.cache import cache
@@ -20,6 +20,8 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from typing import Dict, Any, Union, Type
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from rest_framework import viewsets
+from .serializers import RegionSerializer, ApartmentSerializer
+from rest_framework import generics
 # Create your views here.
 
 
@@ -363,3 +365,26 @@ def robots_txt(request: HttpRequest) -> HttpResponse:
         "Disallow: /admin/",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
+class RegionViewSet(viewsets.ModelViewSet):
+    queryset = Region.objects.all()
+    serializer_class = RegionSerializer
+
+
+class ApartmentViewSet(viewsets.ModelViewSet):
+    serializer_class = ApartmentSerializer
+    queryset = Ad.objects.filter(content_type=ContentType.objects.get_for_model(Apartment))
+
+
+    # def get_queryset(self):
+    #     queryset = Ad.objects.filter(content_type=Apartment)
+    #     region = self.request.query_params.get('region', None)
+    #     action = self.request.query_params.get('action', None)
+    #     if region is not None:
+    #         queryset = queryset.filter(region__id=region)
+    #     #
+    #     # if region is not None:
+    #     #     queryset = queryset.filter(action=action)
+    #
+    #     return queryset

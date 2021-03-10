@@ -1,17 +1,16 @@
 from . import views
+from .routers import router
 from django.urls import path
 from django.urls import include
 from django.contrib.sitemaps.views import sitemap
 from django.contrib.sitemaps import GenericSitemap
 from .models import Ad
-from rest_framework import routers
+
 
 ads_dict = {
     'queryset': Ad.objects.all(),
     'date_field': 'date_added',
 }
-
-router = routers.DefaultRouter()
 
 
 urlpatterns = [
