@@ -11,9 +11,12 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import sentry_sdk
 from decouple import config
 from django.contrib.messages import constants as messages
 from celery.schedules import crontab
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.celery import CeleryIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,8 +32,16 @@ DEBUG = int(config("DEBUG", default=0))
 
 ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS").split(" ")
 
-# Application definition
 
+sentry_sdk.init(
+    dsn=config("SENTRY_DSN"),
+    integrations=[DjangoIntegration(), CeleryIntegration()],
+    traces_sample_rate=1.0,
+    send_default_pii=True
+)
+
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
