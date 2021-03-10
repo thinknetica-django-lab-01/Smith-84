@@ -3,8 +3,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% block meta_title %}
+    {% block meta %}
         <title>Продажа и аренда недвижимости в республики хакасия</title>
+        <meta name="description" content="Купить недвижимость в Хакасии, а также подобрать любые интересующие вас объекты недвижимости в Абакане и республики Хакасия" />
     {% endblock %}
 
     <!-- Custom CSS -->
@@ -12,6 +13,9 @@
 
 	<!-- Custom Color Option -->
 	<link href="{% static '/assets/css/colors.css' %}" rel="stylesheet">
+
+    {% block json_ld %}
+    {% endblock %}
 
 </head>
 <body class="yellow-skin">

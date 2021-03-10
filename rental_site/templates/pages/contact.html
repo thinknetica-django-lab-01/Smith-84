@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block json_ld %}
+    <script type='application/ld+json'>
+        {
+          "@context": "http://www.schema.org",
+          "@type": "person",
+          "name": "Vladimir Stepanov",
+          "jobTitle": "Director",
+          "url": "http://0.0.0.0:8000/",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Guido van Rossum 3",
+            "addressLocality": "Novosibirsk",
+            "addressRegion": "Novosibirsk",
+            "postalCode": "630047",
+            "addressCountry": "Russia"
+          },
+          "email": "309vslexus@gmail.com"
+        }
+     </script>
+{% endblock %}
+{% block content %}
+{% include 'components/header.html' %}
+{{ flatpage.content }}
+{% include 'components/footer.html' %}
+{% endblock %}

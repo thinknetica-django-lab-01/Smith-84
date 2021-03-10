@@ -62,6 +62,11 @@ class AdsListMixin(ListView):
         context = super().get_context_data(**kwargs)
         context['tags'] = Tag.objects.filter(
             ads__content_type=ContentType.objects.get_for_model(self.realty)).distinct()
+        context['realty'] = self.realty._meta.verbose_name_plural
+        if self.action == 'sell':
+            context['action'] = 'Продажа'
+        else:
+            context['action'] = 'Аренда'
         return context
 
     def get_queryset(self) -> 'QuerySet[Ad]':
