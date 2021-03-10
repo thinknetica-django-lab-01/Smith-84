@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'django_celery_beat',
     'django.contrib.sitemaps',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
